@@ -238,11 +238,7 @@ def pickier_start_node(tree):
 	# Keep picking nodes until the node is not the root or a terminal branch
 	while start_node.brl == 0 or start_node.children == []:
 		start_node = pick_start_node(tree)
-		
-	# ?? Might be necessary to keep NNI move from selecting the root branch
-	if start_node.parent.brl == 0:
-		start_node = pickier_start_node(tree)
-	
+			
 	return start_node  
 
 """
