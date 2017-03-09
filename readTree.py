@@ -1,18 +1,22 @@
-
 #!/usr/bin/env python
 
 from __future__ import (division, print_function)
 import random
 import numpy
 
-
-"""pass a node to node. Node("root")"""
-"""root.children will give children of node"""
 class Node:
-	"""pass a node to node. Node("root")"""
-	"""root.children will give children of node"""
+	"""
+	This class defines the structure of Nodes that will be used to build trees.
+	"""
+	
 	def __init__(self,name="",parent=None,children=None, branchlength = 0):
-		"""name of node"""
+		"""
+		This function initializes the node's:
+			- Name
+			- Parent
+			- Children
+			- Branch length
+		"""
 		self.name = name
 		self.brl = branchlength
 		if parent is None:
@@ -26,18 +30,25 @@ class Node:
 		
 class Tree:
 	"""
-	Defines a class of phylogenetic tree, consisting of linked Node objects.
+	Defines a phylogenetic Tree class, consisting of linked Node objects.
+	
+	Assumes rooted, bifurcating trees.
 	"""
 
 	def __init__(self, data, ndict=None, terminal_nodes=None):
-		"""variable stores object called root that is classified as a node"""
-		self.root = Node("root") #Define root
-		"""Initiate with self.root as base. First step is initiating data with root as parent of ALL"""
+		
+		# Instantiate a root node
+		self.root = Node("root") 
+		
+		# Create tree from newick string, rooted on self.root
 		self.newick_splicer(data.strip(";"), self.root)
+
 
 	def newick_splicer(self, data, parent):
 		"""
-		Splices newick data to create a node based tree.
+		Splices newick tree string (data) to instantiate a Tree object. The string passed
+		as data should already have the trailing ";" removed. This tree will be rooted on 
+		the node passed as parent.
 		"""
 		data = data.replace(" ", "")[1: len(data)] 	 #Get rid of all spaces and removes first and last parenthesis
 		n = 0
@@ -64,36 +75,36 @@ class Tree:
 								self.newick_splicer(d, node_creater)
 						break #Terminate loop, we don't need to look any further
 
+
 	def print_names(self,node):
 		"""
-		A method of a Tree object that will print out the names of its
-		terminal nodes.
+		A method of a Tree object that will print out the names of its terminal nodes. To 
+		print out all terminal node names, pass the root as an argument.
 		"""
-
 		if node.children == []: #Identifies terminal node
 			print (node.name)
 		else:
 			for child in node.children:
 				self.print_names(child)
 	
-	def list_term_nodes(self,node,terminal_nodes=None):
+	
+	def list_term_nodes(self,node):
 		"""
-		A method of a Tree object that will print out the node instances for all tips in a list. 
+		A method of a Tree object that will print out the node names and instances for 
+		all tips in a tree (or clade) subtended by the provided node. 
 		"""
-		if terminal_nodes is None:
-			terminal_nodes=[]
-		if node.children == []: #Identifies terminal node
+		if node.children == []: # Identifies terminal node
 			print(node.name)
-			terminal_nodes.append(node)
-		else:
+			print(node)
+		else:	# Internal node
 			for child in node.children:
-				print(terminal_nodes)
-				self.list_term_nodes(child,terminal_nodes)
-		return terminal_nodes
+				self.list_term_nodes(child)
+	
 	
 	def inv_edge_len(self,node,edge=0):
 		"""
-		A method of a Tree object that will return the total length from given node to root. 
+		A method of a Tree object that will return the inverse of the total length from 
+		given node to root. 
 		"""
 		#at root return total
 		if node.brl == 0:
@@ -101,14 +112,13 @@ class Tree:
 		else:
 			#add branch length
 			edge += 1/float(node.brl)
-			new_node = node.parent
-			return self.inv_edge_len(new_node,edge)
+			return self.inv_edge_len(node.parent,edge)
+
 
 	def tree_len(self,node):
 		"""
-		A method to calculate and return total tree length.
+		A method to calculate and return total tree length. Pass the root as an argument.
 		"""
-
 		tot_len = 0
 		if node.children == []: #Terminal branch returns branch length
 			return node.brl
@@ -118,15 +128,14 @@ class Tree:
 				tot_len += self.tree_len(child) #Add length of terminal branch
 			return tot_len
 
+
 	def inv_tree_len(self,node):
 		"""
 		A method to calculate and return inverse of total tree length.
 		"""
-
 		inv_tot_len = 0
 		if node.children == []: #Terminal branch returns branch length
-			inv_tot_len = 1/float(node.brl)
-			return inv_tot_len
+			return 1/float(node.brl)
 		else:
 			if node.brl == 0: #otherwise we get an error for root
 				inv_tot_len += 0
@@ -138,6 +147,7 @@ class Tree:
 				for child in node.children:
 					inv_tot_len += self.inv_tree_len(child) #Add length of terminal branch
 				return inv_tot_len
+
 
 	def newick(self,node):
 		"""
@@ -160,6 +170,7 @@ class Tree:
 				newick += ")"
 			return newick
 
+
 	def has_grandkids(self,node):
 		"""
 		Takes a node and will randomy choose a child and return the child node if it has grandchildren
@@ -178,84 +189,127 @@ class Tree:
 		else:
 			return 0
 
+
 	def node_dict(self,node,ndict=None):
- 		"""
- 		Returns dictionary with all nodes and branch lengths
- 		"""
- 		if ndict is None:
+		"""
+		Returns dictionary with all nodes as keys and branch lengths as values.
+		"""
+		if ndict is None:
 			ndict={}
- 		if node.children == []: #Terminal branch returns branch length
- 			ndict[node]=node.brl
- 			return ndict
- 		else:
- 			ndict[node]=node.brl #Add length of internal branch
- 			for child in node.children:
- 				self.node_dict(child,ndict) #Add length of terminal branch
- 			return ndict
- 			
+		if node.children == []:		# Terminal node
+			ndict[node]=node.brl	# Only terminal branch length returned
+			return ndict
+		else:						# Internal nodes
+			ndict[node]=node.brl 	# Add internal branch length to dictionary
+			for child in node.children:
+				self.node_dict(child,ndict) # Recursively add all descendant brls
+			return ndict
+			
+			
 def pick_start_node(tree):
+	"""
+	Picks node as focus for NNI move.
+	"""
+	# Defines dictionary of nodes and branch lengths for tree
 	n_dict = tree.node_dict(tree.root)
-	#get goal chosen from exp distribution
+	
+	# Draws random number from exponential to use when picking node
 	goal = numpy.random.exponential(0.1)
-	#get node closest to goal, coming from zero towards goal
-	start_brl = max(brl for brl in list(n_dict.values()) if brl < goal)#could also come from above, or choose randomly to come from above or below. 
+	
+	# Finds largest brl that's smaller than random exponential (goal)
+	# Note for future: could also use smallest brl that's larger than goal
+	start_brl = max(brl for brl in list(n_dict.values()) if brl < goal)
+	
+	# Finds node that matches chosen branch length
+	# TO FIX: need to randomly select from among nodes with equal branch lengths
 	for key, value in n_dict.items():
 		if value == start_brl:
 				start_node = key
+				
 	return start_node
 
 def pickier_start_node(tree):
-	#get dictionary of nodes,branchlen as key,value
+	"""
+	Serves as wrapper around pick_start_node to filter out root and tips.
+	"""
+	# Start with root
 	start_node = tree.root
-	#if goal is between 0 and shortest branch, or returns a tip node
+	
+	# Keep picking nodes until the node is not the root or a terminal branch
 	while start_node.brl == 0 or start_node.children == []:
 		start_node = pick_start_node(tree)
-	#if returns a node to sister tips, redo
-	if start_node.parent.brl == 0:
-		start_node = pickier_start_node(tree)
+			
 	return start_node  
 
-def NNI(tree):
-	'''
+"""
+NOTE: Might want to define other functions for picking focal branch for NNI move (e.g., 
+uniform across branches or directly proportional to inverse of branch length).
+"""
+
+def NNI(orig_tree):
+	"""
 	Does NNI move on random branch, preferentially choosing smaller branches. Returns altered tree. 
-	'''
-	#reassign start node to c2. assign as c2
+	
+	Assumes bifurcating tree.
+	"""
+	tree = Tree(orig_tree.newick(orig_tree.root))
+	
+	# Store first focal node in c2
 	c2 = pickier_start_node(tree)
+	
+	# Store 2nd focal node (parent) in p
 	p = c2.parent
+	
 	#print("c2 = "+str(c2.name))
 	#print("p = "+str(p.name))
 	#assign other child to c1
+	
+	# Stores other child of p in c1
 	for c in p.children:
 			if c != c2:
 				c1 = c
-	#c2 will be the node for the brl we choose, so it will always have children. c1 is the other child for the parent/start node
-	#store branchlengths 
+	
+	# c2 will be the node for the brl we choose, so it will always have children. 
+	# c1 is the other child of c2's parent
+	# Storing branch lengths for c1 and c2. We don't technically need to store these 
+	# because they are all still attached to c2, but doing it for clarity for now.
 	br1 = c1.brl
 	br2 = c2.brl
-	#we don't technically need to store these because they are all still attached to c2, but doing it for clarity for now.
+	
+	# Finding children of c2 and storing their branch lengths
 	gc1 = c2.children[0]
 	gc2 = c2.children[1]
 	br3 = gc1.brl
 	br4 = gc2.brl
-	#remove all children
+	
+	# Remove all children from p
 	p.children = []
+	
+	# Name and instantiate new node
 	name = "new_"+str(c2.name)
-	#this is the node to attach things to
 	new_node = Node(name,parent=p)
-	#give it branchlength of c2, then start adding branches
+	
+	# Give it branchlength of c2, then start adding branches
 	new_node.brl = br2
-	#add new node to parent
+	
+	# Add new node to parent
 	p.children.append(new_node)
-	#add c1 to new node
+	
+	# Add c1 to new node
 	new_node.children.append(c1)
-	#add grandkids, one to parent, one to new node. randomly. 
+	c1.parent = new_node
+	
+	# Reassigning grandkids, one to parent, one to new node. randomly. 
 	adopt=random.choice([1,2])
 	if adopt == 1:
 		p.children.append(gc1)
+		gc1.parent = p
 		new_node.children.append(gc2)
+		gc2.parent = new_node
 	elif adopt ==2:
 		p.children.append(gc2)
+		gc2.parent = p
 		new_node.children.append(gc1)
-	#name=tree.newick(new_node)
-	#new_node = can I rename node? this would keep with node naming scheme
+		gc1.parent = new_node
+
 	return tree
