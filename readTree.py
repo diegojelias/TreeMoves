@@ -206,7 +206,7 @@ class Tree:
 			return ndict
 			
 			
-def pick_start_node(tree):
+def start_node_exp(tree):
 	"""
 	Picks node as focus for NNI move.
 	"""
@@ -228,16 +228,16 @@ def pick_start_node(tree):
 				
 	return start_node
 
-def pickier_start_node(tree):
+def start_node_filter(tree):
 	"""
-	Serves as wrapper around pick_start_node to filter out root and tips.
+	Serves as wrapper around start_node_exp to filter out root and tips.
 	"""
 	# Start with root
 	start_node = tree.root
 	
 	# Keep picking nodes until the node is not the root or a terminal branch
 	while start_node.brl == 0 or start_node.children == []:
-		start_node = pick_start_node(tree)
+		start_node = start_node_exp(tree)
 			
 	return start_node  
 
@@ -255,7 +255,7 @@ def NNI(orig_tree):
 	tree = Tree(orig_tree.newick(orig_tree.root))
 	
 	# Store first focal node in c2
-	c2 = pickier_start_node(tree)
+	c2 = start_node_filter(tree)
 	
 	# Store 2nd focal node (parent) in p
 	p = c2.parent
