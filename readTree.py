@@ -3,6 +3,9 @@
 from __future__ import (division, print_function)
 import random
 import numpy
+import dendropy
+import re
+from Bio import Phylo
 
 class Node:
 	"""
@@ -205,7 +208,7 @@ class Tree:
 				self.node_dict(child,ndict) # Recursively add all descendant brls
 			return ndict
 			
-			
+
 def start_node_exp(tree):
 	"""
 	Picks node as focus for NNI move based on branch length. Shorter branches will get chosen more often. 
@@ -260,8 +263,7 @@ def start_node_filter(tree,node_choice):
 	return start_node  
 
 """
-NOTE: Might want to define other functions for picking focal branch for NNI move (e.g., 
-uniform across branches or directly proportional to inverse of branch length).
+NOTE: Might want to define other functions for picking focal branch for NNI move (e.g. directly proportional to inverse of branch length).
 """
 
 def NNI(orig_tree,node_choice='random'):
@@ -331,3 +333,50 @@ def NNI(orig_tree,node_choice='random'):
 		gc1.parent = new_node
 
 	return tree
+
+def read_nexus(in_file,tree_number=0):
+	"""
+	Reads in tree from nexus file and returns readTree.Tree object. Picks tree number that you give it. Automatically uses first tree.  
+	"""
+	# Read in tree from nexus file and transform to newick string
+	t = dendropy.Tree.get(path=in_file,schema="nexus",tree_offset=tree_number)
+	# Convert tree to newick string and strip whitespace characters.
+	n = t.as_string(schema='newick').strip()
+	# Convert to readTree Tree object
+	treeOG = Tree(n)
+	# Print newick string (not nessecary)
+	treeOG.newick(treeOG.root)
+	return treeOG
+
+def rand_tree(tips,brl_avg=1,brl_std=None,verbose='T'):
+	"""
+	Creates random tree to do NNI moves on
+	"""
+	# Create random tree
+	rand_tree = Phylo.BaseTree.Tree.randomized(taxa=tips,branch_length=brl_avg,branch_stdev=brl_std)
+
+	# Convert to newick string, strip trailing whitespace
+	rand_newick = rand_tree.format('newick').strip()
+
+	# Remove root branch length of 0
+	rand_newick2 = re.sub(':0.00000;',';',rand_newick)
+
+	# Remove node names, use this to read into dendropy
+	no_nodes_dp = re.sub('\)n\d+:','):',rand_newick2)
+
+	# Remove trailing ";" use this to read into readTree
+	no_nodes = no_nodes_dp.strip(';')
+	
+	# Print stuff if you want to.
+	if verbose == 'T':
+		# Print newick string
+		print(no_nodes)
+		# View tree
+		Phylo.draw_ascii(rand_tree)
+		
+	# Convert to readTree Tree object
+	tree_random = Tree(no_nodes)
+	return tree_random
+
+
+
