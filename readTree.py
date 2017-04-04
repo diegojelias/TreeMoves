@@ -361,7 +361,7 @@ def rand_tree(tips,brl_avg=1,brl_std=None,verbose='T'):
 	# Remove root branch length of 0
 	rand_newick2 = re.sub(':0.00000;',';',rand_newick)
 
-	# Remove node names, use this to read into dendropy
+	# Remove node names, use this to read into dendropy if needed
 	no_nodes_dp = re.sub('\)n\d+:','):',rand_newick2)
 
 	# Remove trailing ";" use this to read into readTree
@@ -379,4 +379,25 @@ def rand_tree(tips,brl_avg=1,brl_std=None,verbose='T'):
 	return tree_random
 
 
+def mult_NNI(in_tree,num_out_trees,out_file='outFile.t',node_choice='random'):
+	'''
+	Does one NNI move on starting readTree.Tree object and outputs to nexus file with starting tree as first tree in file and each subsequent tree exactly 1 NNI move from original tree.
+	Does not account for possible duplicates in out file.  
+	'''
+	# Turns readTree.Tree object into a newick string to read into dendropy
+	in_tree_newick = in_tree.newick(in_tree.root)+";"
+
+	# Starts dendropy tree list with starting input tree
+	treez = dendropy.TreeList()
+	treez.append(dendropy.Tree.get(data=in_tree_newick, schema='newick'))
+
+	# Creates multiple new trees, each new tree is one NNI move from original tree
+	for i in range(num_out_trees):
+		new_tree = NNI(in_tree,node_choice)
+		new_tree = new_tree.newick(new_tree.root)+";"
+		nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
+		treez.append(nni_tree)
+
+	# Write to out file
+	treez.write(path=out_file, schema='nexus')
 
