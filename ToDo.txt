@@ -6,6 +6,20 @@ readTree.py
 	- Use characters to illustrate what the moves are doing. Lable with variables from code. 
 		- >>> tree = Phylo.parse('phyloxml_examples.xml', 'phyloxml').next()
 		- >>> Phylo.draw_ascii(tree)
+	- write Tree function to output number of tips
+	"""
+		def num_tips(self,node,counter=0):
+		"""
+		A method of a Tree object that will print out the number of terminal nodes. Pass the root as an argument.
+		"""
+		if node.children == []: #Identifies terminal node
+			counter+=1
+			return counter
+		else:
+			for child in node.children:
+				self.num_tips(child,counter)
+
+	"""
 
 subsampleTreeFile.py
 	- switch from Dendropy to biopython if possible for reading in nexus files. Something faster.  

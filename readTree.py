@@ -91,7 +91,6 @@ class Tree:
 			for child in node.children:
 				self.print_names(child)
 	
-	
 	def list_term_nodes(self,node):
 		"""
 		A method of a Tree object that will print out the node names and instances for 
@@ -208,7 +207,6 @@ class Tree:
 			for child in node.children:
 				self.node_dict(child,ndict) # Recursively add all descendant brls
 			return ndict
-			
 
 def start_node_exp(tree):
 	"""
@@ -417,7 +415,6 @@ def NNI_mult_trees(in_tree,num_out_trees,num_nni_moves=2,out_file='outFile.t',no
 		'''
 	# Write to out file
 	treez.write(path=out_file, schema='nexus')
-	
 
 '''
 In out functions below
