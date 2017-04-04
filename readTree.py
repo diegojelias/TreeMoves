@@ -334,6 +334,34 @@ def NNI(orig_tree,node_choice='random'):
 
 	return tree
 
+def NNI_mult_trees(in_tree,num_out_trees,out_file='outFile.t',node_choice='random'):
+	'''
+	Does one NNI move on starting readTree.Tree object and outputs to nexus file with starting tree as first tree in file and each subsequent tree exactly 1 NNI move from original tree.
+	Does not account for possible duplicates in out file.  
+	'''
+	# Turns readTree.Tree object into a newick string to read into dendropy
+	in_tree_newick = in_tree.newick(in_tree.root)+";"
+
+	# Starts dendropy tree list with starting input tree
+	treez = dendropy.TreeList()
+	treez.append(dendropy.Tree.get(data=in_tree_newick, schema='newick'))
+
+	# Creates multiple new trees, each new tree is one NNI move from original tree
+	for i in range(num_out_trees):
+		new_tree = NNI(in_tree,node_choice)
+		new_tree = new_tree.newick(new_tree.root)+";"
+		nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
+		treez.append(nni_tree)
+
+	# Write to out file
+	treez.write(path=out_file, schema='nexus')
+
+#def NNI_mult_moves(in_tree,num_moves,no_duplicates='F'):
+
+'''
+In out functions below
+'''
+
 def read_nexus(in_file,tree_number=0):
 	"""
 	Reads in tree from nexus file and returns readTree.Tree object. Picks tree number that you give it. Automatically uses first tree.  
@@ -378,26 +406,62 @@ def rand_tree(tips,brl_avg=1,brl_std=None,verbose='T'):
 	tree_random = Tree(no_nodes)
 	return tree_random
 
-
-def mult_NNI(in_tree,num_out_trees,out_file='outFile.t',node_choice='random'):
+def view_phylo(tree_object):
 	'''
-	Does one NNI move on starting readTree.Tree object and outputs to nexus file with starting tree as first tree in file and each subsequent tree exactly 1 NNI move from original tree.
-	Does not account for possible duplicates in out file.  
+	Visualize tree with biopython
 	'''
-	# Turns readTree.Tree object into a newick string to read into dendropy
-	in_tree_newick = in_tree.newick(in_tree.root)+";"
+	tree_newick = StringIO(tree_object.newick(tree_object.root))
+	tree = Phylo.read(tree_newick, "newick")
+	print("Tree")
+	print(tree_object.newick(tree_object.root))
+	Phylo.draw_ascii(tree)
 
-	# Starts dendropy tree list with starting input tree
-	treez = dendropy.TreeList()
-	treez.append(dendropy.Tree.get(data=in_tree_newick, schema='newick'))
+'''
+Tree information functions
+'''
 
-	# Creates multiple new trees, each new tree is one NNI move from original tree
-	for i in range(num_out_trees):
-		new_tree = NNI(in_tree,node_choice)
-		new_tree = new_tree.newick(new_tree.root)+";"
-		nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
-		treez.append(nni_tree)
+def rf_unweighted(tree_object1,tree_object2): 
+	tree_newick1 = tree_object1.newick(tree_object1.root)+";"
+	tree_newick2 = tree_object2.newick(tree_object2.root)+";"
+	#print(tree_newick1)
+	#print(tree_newick2)
+	taxa = dendropy.TaxonNamespace() #set taxa same for all 
+	tree1=dendropy.Tree.get(data=tree_newick1,schema='newick',taxon_namespace=taxa, rooting='force-rooted')
+	tree2=dendropy.Tree.get(data=tree_newick2,schema='newick',taxon_namespace=taxa, rooting='force-rooted')
+	tree1.encode_bipartitions()
+	tree2.encode_bipartitions()
+	dist=dendropy.calculate.treecompare.symmetric_difference(tree1,tree2)
+	return dist
 
-	# Write to out file
-	treez.write(path=out_file, schema='nexus')
+def rf_weighted(tree_object1,tree_object2): 
+	tree_newick1 = tree_object1.newick(tree_object1.root)+";"
+	tree_newick2 = tree_object2.newick(tree_object2.root)+";"
+	#print(tree_newick1)
+	#print(tree_newick2)
+	taxa = dendropy.TaxonNamespace() #set taxa same for all 
+	tree1=dendropy.Tree.get(data=tree_newick1,schema='newick',taxon_namespace=taxa, rooting='force-rooted')
+	tree2=dendropy.Tree.get(data=tree_newick2,schema='newick',taxon_namespace=taxa, rooting='force-rooted')
+	tree1.encode_bipartitions()
+	tree2.encode_bipartitions()
+	dist=dendropy.calculate.treecompare.weighted_robinson_foulds_distance(tree1,tree2)
+	return dist
 
+def compare_tree_file(in_file,total_trees,distance_metric="uRF"):
+	'''
+	Takes a tree file and compares all trees to first tree in file. 
+	For NNI_mult_trees the first tree is the original tree. 
+	'''
+	if distance_metric == "uRF":
+		print("Unweighted Robinson Foulds distance")
+	elif distance_metric == "RF":
+		print("Weighted Robinson Foulds distance")
+	else:
+		print("Input distance metric of choice. uRF for unweighted RF distances and RF for weighted")
+	for i in range(0,total_trees):
+		in_tree_object=read_nexus(in_file,0)
+		new_tree_object=read_nexus(in_file,i)
+		if distance_metric == "uRF":
+			print("Tree "+str(i)+" : "+str(rf_unweighted(in_tree_object,new_tree_object)))
+		elif distance_metric == "RF":
+			print("Tree "+str(i)+" : "+str(rf_weighted(in_tree_object,new_tree_object)))
+		
