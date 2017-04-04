@@ -368,9 +368,9 @@ def NNI_mult_moves(in_tree,num_moves,node_choice,no_dup_start_tree='T'):
 				#print("new_tree_distance :"+str(dist))
 	return new_tree
 
-def NNI_mult_trees(in_tree,num_out_trees,num_nni_moves=2,out_file='outFile.t',node_choice='random',no_dup_start_tree='T'):
+def NNI_mult_trees(in_tree,num_out_trees,num_nni_moves=2,out_file='outFile.t',node_choice='random',no_dup_start_tree='T',no_dup_trees='F'):
 	'''
-	Does one NNI move on starting readTree.Tree object and outputs to nexus file with starting tree as first tree in file and each subsequent tree exactly 1 NNI move from original tree.
+	Does specific number of NNI moves on starting readTree.Tree object and outputs to nexus file with starting tree as first tree in file followed by NNI move trees.
 	Does not account for possible duplicates in out file.  
 	'''
 	# Turns readTree.Tree object into a newick string to read into dendropy
@@ -380,16 +380,44 @@ def NNI_mult_trees(in_tree,num_out_trees,num_nni_moves=2,out_file='outFile.t',no
 	treez = dendropy.TreeList()
 	treez.append(dendropy.Tree.get(data=in_tree_newick, schema='newick'))
 
-	# Creates multiple new trees, each new tree is one NNI move from original tree
-	for i in range(num_out_trees):
-		new_tree = NNI_mult_moves(in_tree,num_nni_moves,node_choice,no_dup_start_tree)
-		new_tree = new_tree.newick(new_tree.root)+";"
-		nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
-		treez.append(nni_tree)
+	# Creates a given number of trees that may include duplicates
+	if no_dup_trees == 'F':
+		for i in range(num_out_trees):
+			# Make NNI move
+			new_tree = NNI_mult_moves(in_tree,num_nni_moves,node_choice,no_dup_start_tree)
+			# Store tree and read into dendropy
+			new_tree = new_tree.newick(new_tree.root)+";"
+			nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
+			# Add to tree list
+			treez.append(nni_tree)
 
+	# Option to not add trees unless they are unique
+	elif no_dup_trees == 'T':
+		print("not incorperated into script yet")
+		'''
+		# Start list for calculating RF distances
+		treez_rooted = dendropy.TreeList()
+		taxa = dendropy.TaxonNamespace() 
+		# Store starting tree
+		treez_rooted.append(dendropy.Tree.get(data=in_tree_newick, schema='newick',taxon_namespace=taxa, rooting='force-rooted'))
+
+		for i in range(num_out_trees):
+			# Make NNI move
+			new_tree = NNI_mult_moves(in_tree,num_nni_moves,node_choice,no_dup_start_tree)
+			# Store tree and read into dendropy as rooted and unrooted
+			new_tree = new_tree.newick(new_tree.root)+";"
+			nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
+			rooted_tree = dendropy.Tree.get(data=new_tree, schema='newick',taxon_namespace=taxa, rooting='force-rooted')
+			for stored_tree in treez_rooted:
+				stored_tree.encode_bipartitions()
+				rooted_tree.encode_bipartitions()
+				dist=dendropy.calculate.treecompare.symmetric_difference(stored_tree,rooted_tree)
+				if 
+						treez.append(nni_tree)
+		'''
 	# Write to out file
 	treez.write(path=out_file, schema='nexus')
-
+	
 
 '''
 In out functions below
