@@ -219,13 +219,14 @@ def start_node_exp(tree):
 	# Finds largest brl that's smaller than random exponential (goal)
 	# Note for future: could also use smallest brl that's larger than goal
 	start_brl = max(brl for brl in list(n_dict.values()) if brl < goal)
-	
+
 	# Finds node that matches chosen branch length
 	# TO FIX: need to randomly select from among nodes with equal branch lengths
+	start_nodes_dict = {}
 	for key, value in n_dict.items():
 		if value == start_brl:
-				start_node = key
-				
+			start_nodes_dict[key]=value
+	start_node = random.choice(start_nodes_dict.keys())		
 	return start_node
 
 def start_node_filter(tree):

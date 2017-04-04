@@ -6,6 +6,7 @@ readTree.py
 	- Use characters to illustrate what the moves are doing. Lable with variables from code. 
 		- >>> tree = Phylo.parse('phyloxml_examples.xml', 'phyloxml').next()
 		- >>> Phylo.draw_ascii(tree)
+	- start_node_exp - need to figure out how 
 
 subsampleTreeFile.py
 	- switch from Dendropy to biopython if possible for reading in nexus files. Something faster.  

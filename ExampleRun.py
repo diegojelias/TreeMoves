@@ -15,9 +15,26 @@ from readTree import Tree
 import random
 import numpy
 import readTree
-import dendropy
-import re
-from Bio import Phylo
+#import dendropy
+#import re
+#from Bio import Phylo
+
+############################## 
+doo="(P:0.09,(Q:0.07,(X:0.02,((Y:0.03,Z:0.01):0.02,W:0.08):0.06):0.03):0.04)"
+boo="(P:0.09,(Q:0.09,(X:0.02,((Y:0.03,Z:0.01):0.02,W:0.08):0.06):0.03):0.04)"
+Zim = Tree(boo)
+Zim.newick(Zim.root)
+Jim = readTree.NNI(Zim)
+Jim.newick(Jim.root)
+
+
+
+for key, value in n_dict.items():
+		if value == start_brl:
+				start_node = key
+
+
+
 
 ############################## 
 '''
@@ -63,10 +80,15 @@ print(no_nodes)
 tree_random = Tree(no_nodes)
 tree_random.newick(tree_random.root)
 
-#return tree_random
+#return tree_random. # this works sometimes
 readTree.NNI(tree_random)
+
+
+
+
 ############################## 
 '''
+#Test after readTree.NNI() works
 Does one NNI move on starting readTree and outputs to file
 Input starting tree, number of out trees
 '''
@@ -81,9 +103,6 @@ in_tree_newick = in_tree.newick(in_tree.root)
 # Start dendropy tree list with starting input tree
 treez = dendropy.TreeList()
 treez.append(dendropy.Tree.get(data=no_nodes_dp, schema='newick'))
-new_tree = readTree.NNI(in_tree)
-nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
-
 
 for i in range(num_out_trees):
 	new_tree = readTree.NNI(in_tree)+';'
@@ -96,8 +115,12 @@ treez.write(path=out_file, schema='nexus')
 
 ############################## 
 doo="(P:0.09,(Q:0.07,(X:0.02,((Y:0.03,Z:0.01):0.02,W:0.08):0.06):0.03):0.04)"
-Jim = Tree(doo)
 Zim = Tree(doo)
+readTree.NNI(Zim)
+
+
+Jim = Tree(doo)
+
 Jim.newick(Jim.root)
 Zim.newick(Zim.root)
 readTree.NNI(Zim)
