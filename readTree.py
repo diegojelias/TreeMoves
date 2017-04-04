@@ -6,6 +6,7 @@ import numpy
 import dendropy
 import re
 from Bio import Phylo
+from cStringIO import StringIO
 
 class Node:
 	"""
@@ -334,7 +335,40 @@ def NNI(orig_tree,node_choice='random'):
 
 	return tree
 
-def NNI_mult_trees(in_tree,num_out_trees,out_file='outFile.t',node_choice='random'):
+def NNI_mult_moves(in_tree,num_moves,node_choice,no_dup_start_tree='T'):
+	"""
+	Takes an input tree and makes a given number of moves on that tree. outputs a readTree.Tree object.
+	"""
+	new_tree=in_tree
+	# If we don't mind getting a duplicate of the start tree
+	if no_dup_start_tree == 'F':
+		for move in range(num_moves):
+			# Makes given number of moves based on single starting tree.
+			new_tree = NNI(new_tree,node_choice)
+			dist = rf_unweighted(in_tree,new_tree)
+			#readTree.view_phylo(new_tree)
+			#print("distance :"+str(dist))
+	# If we don't want to ever return to the starting tree. 
+	# It could jump back and forth between other trees that are not the starting tree. 
+	elif no_dup_start_tree == 'T':
+		for move in range(num_moves):
+			#print("move :"+str(move))
+			next_tree = NNI(new_tree,node_choice)
+			dist = rf_unweighted(in_tree,next_tree)
+			#print("distance :"+str(dist))
+			# If new tree is the same as starting tree, make another move on it until it is different. 
+			while dist == 0:
+				next_tree = NNI(new_tree,node_choice)
+				dist = rf_unweighted(in_tree,next_tree)
+				#print('redo move')
+				#print("distance_x :"+str(dist))
+			if dist > 0:
+				new_tree = next_tree
+				dist = rf_unweighted(in_tree,new_tree)
+				#print("new_tree_distance :"+str(dist))
+	return new_tree
+
+def NNI_mult_trees(in_tree,num_out_trees,num_nni_moves=2,out_file='outFile.t',node_choice='random',no_dup_start_tree='T'):
 	'''
 	Does one NNI move on starting readTree.Tree object and outputs to nexus file with starting tree as first tree in file and each subsequent tree exactly 1 NNI move from original tree.
 	Does not account for possible duplicates in out file.  
@@ -348,7 +382,7 @@ def NNI_mult_trees(in_tree,num_out_trees,out_file='outFile.t',node_choice='rando
 
 	# Creates multiple new trees, each new tree is one NNI move from original tree
 	for i in range(num_out_trees):
-		new_tree = NNI(in_tree,node_choice)
+		new_tree = NNI_mult_moves(in_tree,num_nni_moves,node_choice,no_dup_start_tree)
 		new_tree = new_tree.newick(new_tree.root)+";"
 		nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
 		treez.append(nni_tree)
@@ -356,7 +390,6 @@ def NNI_mult_trees(in_tree,num_out_trees,out_file='outFile.t',node_choice='rando
 	# Write to out file
 	treez.write(path=out_file, schema='nexus')
 
-#def NNI_mult_moves(in_tree,num_moves,no_duplicates='F'):
 
 '''
 In out functions below
