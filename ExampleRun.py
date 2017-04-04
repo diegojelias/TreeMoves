@@ -15,16 +15,16 @@ from readTree import Tree
 import random
 import numpy
 import readTree
-#import dendropy
-#import re
-#from Bio import Phylo
+import dendropy
+import re
+from Bio import Phylo
 
 ############################## 
 doo="(P:0.09,(Q:0.07,(X:0.02,((Y:0.03,Z:0.01):0.02,W:0.08):0.06):0.03):0.04)"
-boo="(P:0.09,(Q:0.09,(X:0.02,((Y:0.03,Z:0.01):0.02,W:0.08):0.06):0.03):0.04)"
+boo="(P:0.01,(Q:0.01,(X:0.01,((Y:0.01,Z:0.01):0.01,W:0.01):0.01):0.01):0.01)"
 Zim = Tree(boo)
 Zim.newick(Zim.root)
-Jim = readTree.NNI(Zim)
+Jim = readTree.NNI(Zim,'exponential')
 Jim.newick(Jim.root)
 
 
@@ -105,9 +105,12 @@ treez = dendropy.TreeList()
 treez.append(dendropy.Tree.get(data=no_nodes_dp, schema='newick'))
 
 for i in range(num_out_trees):
-	new_tree = readTree.NNI(in_tree)+';'
+	new_tree = readTree.NNI(in_tree)
+	new_tree = new_tree.newick(new_tree.root)+";"
 	nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
 	treez.append(nni_tree)
+
+
 treez.write(path=out_file, schema='nexus')
 
 

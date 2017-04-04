@@ -208,7 +208,7 @@ class Tree:
 			
 def start_node_exp(tree):
 	"""
-	Picks node as focus for NNI move.
+	Picks node as focus for NNI move based on branch length. Shorter branches will get chosen more often. 
 	"""
 	# Defines dictionary of nodes and branch lengths for tree
 	n_dict = tree.node_dict(tree.root)
@@ -220,26 +220,43 @@ def start_node_exp(tree):
 	# Note for future: could also use smallest brl that's larger than goal
 	start_brl = max(brl for brl in list(n_dict.values()) if brl < goal)
 
-	# Finds node that matches chosen branch length
-	# TO FIX: need to randomly select from among nodes with equal branch lengths
+	# Finds nodes that matches chosen branch length
 	start_nodes_dict = {}
 	for key, value in n_dict.items():
 		if value == start_brl:
 			start_nodes_dict[key]=value
+	# Randomly pick node from all nodes that match chosen brl
 	start_node = random.choice(start_nodes_dict.keys())		
 	return start_node
 
-def start_node_filter(tree):
+def start_node_rand(tree):
 	"""
-	Serves as wrapper around start_node_exp to filter out root and tips.
+	Picks node as focus for NNI move randomly. 
+	"""
+	# Defines dictionary of nodes and branch lengths for tree
+	n_dict = tree.node_dict(tree.root)
+	
+	# Picks random start node
+	start_node = random.choice(n_dict.keys())		
+	return start_node
+
+def start_node_filter(tree,node_choice):
+	"""
+	Serves as wrapper to filter out root and tips.
 	"""
 	# Start with root
 	start_node = tree.root
 	
 	# Keep picking nodes until the node is not the root or a terminal branch
 	while start_node.brl == 0 or start_node.children == []:
-		start_node = start_node_exp(tree)
-			
+		if node_choice == 'exponential':
+			#print("exponential")
+			start_node = start_node_exp(tree)
+		elif node_choice == 'random':
+			#print("random")
+			start_node = start_node_rand(tree)
+		else:
+			print("Enter 'exponetial' or 'random' for how you want your starting branch chosen. Check spelling")
 	return start_node  
 
 """
@@ -247,7 +264,7 @@ NOTE: Might want to define other functions for picking focal branch for NNI move
 uniform across branches or directly proportional to inverse of branch length).
 """
 
-def NNI(orig_tree):
+def NNI(orig_tree,node_choice='random'):
 	"""
 	Does NNI move on random branch, preferentially choosing smaller branches. Returns altered tree. 
 	
@@ -256,7 +273,7 @@ def NNI(orig_tree):
 	tree = Tree(orig_tree.newick(orig_tree.root))
 	
 	# Store first focal node in c2
-	c2 = start_node_filter(tree)
+	c2 = start_node_filter(tree,node_choice)
 	
 	# Store 2nd focal node (parent) in p
 	p = c2.parent
