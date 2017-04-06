@@ -417,7 +417,7 @@ def NNI_mult_trees(in_tree,num_out_trees,num_nni_moves=2,out_file='outFile.t',no
 	treez.write(path=out_file, schema='nexus')
 
 '''
-In out functions below
+In out functions 
 '''
 
 def read_nexus(in_file,tree_number=0):
@@ -504,7 +504,7 @@ def rf_weighted(tree_object1,tree_object2):
 	dist=dendropy.calculate.treecompare.weighted_robinson_foulds_distance(tree1,tree2)
 	return dist
 
-def compare_tree_file(in_file,total_trees,distance_metric="uRF"):
+def compare_tree_file(in_file,total_trees,starting_tree_number,distance_metric="uRF"):
 	'''
 	Takes a tree file and compares all trees to first tree in file. 
 	For NNI_mult_trees the first tree is the original tree. 
@@ -516,7 +516,7 @@ def compare_tree_file(in_file,total_trees,distance_metric="uRF"):
 	else:
 		print("Input distance metric of choice. uRF for unweighted RF distances and RF for weighted")
 	for i in range(0,total_trees):
-		in_tree_object=read_nexus(in_file,0)
+		in_tree_object=read_nexus(in_file,starting_tree_number)
 		new_tree_object=read_nexus(in_file,i)
 		if distance_metric == "uRF":
 			print("Tree "+str(i)+" : "+str(rf_unweighted(in_tree_object,new_tree_object)))

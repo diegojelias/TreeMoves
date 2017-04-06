@@ -37,7 +37,7 @@ in_tree = Tree(doo)
 readTree.NNI_mult_trees(in_tree=in_tree,num_out_trees=10,num_nni_moves=3,out_file='outFile2.t',node_choice='random',no_dup_start_tree='F')
 
 
-readTree.compare_tree_file(in_file='outFile2.t',total_trees=11,distance_metric="uRF")
+readTree.compare_tree_file(in_file='100_tips_1_nni.trees',total_trees=101,distance_metric="uRF")
 
 
 ############################################################  
