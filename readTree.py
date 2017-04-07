@@ -333,7 +333,7 @@ def NNI(orig_tree,node_choice='random'):
 
 	return tree
 
-def NNI_mult_moves(in_tree,num_moves,node_choice,no_dup_start_tree='F'):
+def NNI_mult_moves(in_tree,num_moves,node_choice='random',no_dup_start_tree='F'):
 	"""
 	Takes an input tree and makes a given number of moves on that tree. outputs a readTree.Tree object.
 	"""
@@ -343,7 +343,7 @@ def NNI_mult_moves(in_tree,num_moves,node_choice,no_dup_start_tree='F'):
 		for move in range(num_moves):
 			# Makes given number of moves based on single starting tree.
 			new_tree = NNI(new_tree,node_choice)
-			dist = rf_unweighted(in_tree,new_tree)
+			#dist = rf_unweighted(in_tree,new_tree)
 			#readTree.view_phylo(new_tree)
 			#print("distance :"+str(dist))
 	# If we don't want to ever return to the starting tree. 
@@ -376,14 +376,14 @@ def NNI_mult_trees(in_tree,num_out_trees,num_nni_moves,out='file',out_file='outF
 
 	# Starts dendropy tree list with starting input tree
 	treez = dendropy.TreeList()
-	treez.append(dendropy.Tree.get(data=in_tree_newick, schema='newick'))
+	treez.append(dendropy.Tree.get(data=in_tree_newick, schema='newick', rooting='force-rooted'))
 
 	for i in range(num_out_trees):
 		# Make NNI move
 		new_tree = NNI_mult_moves(in_tree,num_nni_moves,node_choice,no_dup_start_tree)
 		# Store tree and read into dendropy
 		new_tree = new_tree.newick(new_tree.root)+";"
-		nni_tree = dendropy.Tree.get(data=new_tree, schema='newick')
+		nni_tree = dendropy.Tree.get(data=new_tree, schema='newick', rooting='force-rooted')
 		# Add to tree list
 		treez.append(nni_tree)
 	if out == 'file':
@@ -393,9 +393,7 @@ def NNI_mult_trees(in_tree,num_out_trees,num_nni_moves,out='file',out_file='outF
 		return treez
 
 	else:
-		print("Please choose to output 'list' or 'file'")
-
-def NNI_mult_start()
+		print("Please choose to output of 'list' or 'file'")
 
 '''
 In out functions 
@@ -406,11 +404,14 @@ def read_nexus(in_file,tree_number=0):
 	Reads in tree from nexus file and returns readTree.Tree object. Picks tree number that you give it. Automatically uses first tree.  
 	"""
 	# Read in tree from nexus file and transform to newick string
-	t = dendropy.Tree.get(path=in_file,schema="nexus",tree_offset=tree_number)
-	# Convert tree to newick string and strip whitespace characters.
-	n = t.as_string(schema='newick').strip()
+	t = dendropy.Tree.get(path=in_file,schema="nexus",tree_offset=tree_number,rooting='force-rooted')
+	# Convert tree to newick string and strip characters.
+	u = t.as_string(schema='newick').strip()
+	v = u.strip(';')
+	w = v.strip('[&R]')
+	x = w.strip()
 	# Convert to readTree Tree object
-	treeOG = Tree(n)
+	treeOG = Tree(x)
 	# Print newick string (not nessecary)
 	treeOG.newick(treeOG.root)
 	return treeOG
@@ -455,11 +456,28 @@ def view_phylo(tree_object):
 	print(tree_object.newick(tree_object.root))
 	Phylo.draw_ascii(tree)
 
+def list_to_out(list1,list2,out_file):
+	'''
+	Takes multiple dendropy tree lists and outputs to a single file.
+	'''
+	treez = dendropy.TreeList()
+	treez.extend(list1)
+	treez.extend(list2)
+	treez.write(path=out_file, schema='nexus')
+
+def write_single_tree(in_tree_object,out_file):
+	# turn into newick
+	newick_tree = in_tree_object.newick(in_tree_object.root) + ";"
+	# read into dendropy
+	dp_tree = dendropy.Tree.get(data=newick_tree, schema='newick')
+	# write to file
+	dp_tree.write(path=out_file, schema='nexus')
+
 '''
 Tree information functions
 '''
 
-def rf_unweighted(tree_object1,tree_object2): 
+def rf_unweighted(tree_object1,tree_object2,normalized='F'): 
 	tree_newick1 = tree_object1.newick(tree_object1.root)+";"
 	tree_newick2 = tree_object2.newick(tree_object2.root)+";"
 	#print(tree_newick1)
@@ -470,7 +488,13 @@ def rf_unweighted(tree_object1,tree_object2):
 	tree1.encode_bipartitions()
 	tree2.encode_bipartitions()
 	dist=dendropy.calculate.treecompare.symmetric_difference(tree1,tree2)
-	return dist
+	if normalized == 'F':
+		return dist
+	elif normalized == 'T':
+		max_RF = 2*(len(taxa)-2)
+		norm_dist = dist/max_RF
+		both = [dist,norm_dist]
+		return both
 
 def rf_weighted(tree_object1,tree_object2): 
 	tree_newick1 = tree_object1.newick(tree_object1.root)+";"
@@ -485,22 +509,43 @@ def rf_weighted(tree_object1,tree_object2):
 	dist=dendropy.calculate.treecompare.weighted_robinson_foulds_distance(tree1,tree2)
 	return dist
 
-def compare_tree_file(in_file,total_trees,starting_tree_number,distance_metric="uRF"):
+def compare_tree_file(in_file,total_trees,starting_tree_number=0,distance_metric="uRF_norm"):
 	'''
 	Takes a tree file and compares all trees to first tree in file. 
 	For NNI_mult_trees the first tree is the original tree. 
 	'''
 	if distance_metric == "uRF":
 		print("Unweighted Robinson Foulds distance")
-	elif distance_metric == "RF":
+	elif distance_metric == "wRF":
 		print("Weighted Robinson Foulds distance")
+	elif distance_metric == "uRF_norm":
+		print("Unweighted Robinson Foulds distance, normalized")
 	else:
-		print("Input distance metric of choice. uRF for unweighted RF distances and RF for weighted")
+		print("Input distance metric of choice. 'uRF' for unweighted RF distances, 'wRF' for weighted, 'uRF_norm' for normalized uRF")
 	for i in range(0,total_trees):
 		in_tree_object=read_nexus(in_file,starting_tree_number)
 		new_tree_object=read_nexus(in_file,i)
+
 		if distance_metric == "uRF":
-			print("Tree "+str(i)+" : "+str(rf_unweighted(in_tree_object,new_tree_object)))
+			print("Tree "+str(i)+" : "+str(rf_unweighted(in_tree_object,new_tree_object,'F')))
+
+		elif distance_metric == "uRF_norm":
+			un,nm = rf_unweighted(in_tree_object,new_tree_object,'T')
+			print("Tree "+str(i)+" : "+str(un)+", "+str(nm))
+
 		elif distance_metric == "RF":
 			print("Tree "+str(i)+" : "+str(rf_weighted(in_tree_object,new_tree_object)))
 		
+def cluster_density_avg(in_file,NNI_trees,starting_tree_number=0):
+	nRF_list = []
+	x = starting_tree_number + 1
+	y = x + NNI_trees -1
+	print(x,y)
+	for i in range(x,y):
+		in_tree_object=read_nexus(in_file,starting_tree_number)
+		new_tree_object=read_nexus(in_file,i)
+		un,nm = rf_unweighted(in_tree_object,new_tree_object,'T')
+		nRF_list.append(nm)
+	return numpy.mean(nRF_list)
+
+

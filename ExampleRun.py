@@ -23,32 +23,17 @@ from Bio import Phylo
 ############################################################ 
 #Scratch paper
 ############################################################
-############################## 
-# rf distances
-############################## 
-
-############################## 
-# Iterate through file
-############################## 
-
-doo="(P:0.09,(Q:0.07,(X:0.02,((Y:0.03,Z:0.01):0.02,W:0.08):0.06):0.03):0.04)"
-# Create readTree.tree object
-in_tree = Tree(doo)
-readTree.NNI_mult_trees(in_tree=in_tree,num_out_trees=10,num_nni_moves=3,out_file='outFile2.t',node_choice='random',no_dup_start_tree='F')
-
-
-readTree.compare_tree_file(in_file='100_tips_1_nni.trees',total_trees=101,distance_metric="uRF")
-
-
-############################################################  
-#Scratch paper. works
-############################################################  
 
 
 
 ###############################################################################
 #Examples of working parts
 ###############################################################################
+#Notes
+'''
+Needs to be updated with new options written into readTree.py
+'''
+
 
 ############################## 
 #Input tree options
@@ -93,4 +78,5 @@ readTree.view_phylo(new_tree_object)
 # Check that all trees have the right number of moves from start tree
 readTree.compare_tree_file(in_file='outFile1.t',total_trees=11,distance_metric="uRF")
 
-
+# Compare RF distance between two trees.
+readTree.rf_unweighted(in_tree_object,new_tree_object,normalized='T')
