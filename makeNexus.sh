@@ -9,12 +9,13 @@ for f in *.tree
 do
 base=`basename $f .tree`
 out_nexus=$base".nex"
-echo "/Applications/paup4a152_osx $f
-Y
-1000000
-2
-savetrees file=$out_nexus
-quit
+echo "begin paup;
+	set nowarnreset autoclose maxtrees = 200000;
+	execute $f;
+	savetrees file=$out_nexus;
+	quit;
+
 " >> paup_to_nexus_list.txt
 done
 
+/Applications/paup4a152_osx paup_to_nexus_list.txt
