@@ -2,20 +2,26 @@
 
 # This will iterate through all files with designated suffix. 
 # Output will be a text file with all the commands needed to convert nexus files into a format readable by treescaper. 
-# You will have to manually copy and paste the contents of 'paup_to_nexus_list.txt' into the terminal. 
+# This script executes the text file to add taxa translate blocks and create nexus files. 
 # Edit directory for Paup* as needed. 
+
+echo "begin paup;
+	set nowarnreset autoclose maxtrees = 200000;
+" >> paup_to_nexus_list.txt
 
 for f in *.tree
 do
 base=`basename $f .tree`
 out_nexus=$base".nex"
-echo "begin paup;
-	set nowarnreset autoclose maxtrees = 200000;
+echo "
 	execute $f;
 	savetrees file=$out_nexus;
-	quit;
-
 " >> paup_to_nexus_list.txt
 done
+
+echo "
+	quit;
+" >> paup_to_nexus_list.txt
+
 
 /Applications/paup4a152_osx paup_to_nexus_list.txt
