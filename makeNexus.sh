@@ -24,4 +24,4 @@ echo "
 " >> paup_to_nexus_list.txt
 
 
-/Applications/paup4a152_osx paup_to_nexus_list.txt
+/Applications/paup4a152_osx paup_to_nexus_list.txt > paup.out
