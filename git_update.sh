@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Typo"
+message="edits"
 
 echo $message
 
