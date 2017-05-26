@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Works locally. Commit before cluster test"
+message="Typo"
 
 echo $message
 
