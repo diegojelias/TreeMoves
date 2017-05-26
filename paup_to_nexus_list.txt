@@ -1,0 +1,18 @@
+begin paup;
+	set nowarnreset autoclose maxtrees = 200000;
+
+
+	execute 10tip_200trees_cloud.tree;
+	savetrees file=10tip_200trees_cloud.nex;
+
+
+	execute 10tip_200trees_starting_tree1.tree;
+	savetrees file=10tip_200trees_starting_tree1.nex;
+
+
+	execute 10tip_200trees_starting_tree_2.tree;
+	savetrees file=10tip_200trees_starting_tree_2.nex;
+
+
+	quit;
+

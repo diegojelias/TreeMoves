@@ -5,6 +5,8 @@
 # This script executes the text file to add taxa translate blocks and create nexus files. 
 # Edit directory for Paup* as needed. 
 
+rm paup_to_nexus_list.txt
+
 echo "begin paup;
 	set nowarnreset autoclose maxtrees = 200000;
 " >> paup_to_nexus_list.txt
@@ -25,3 +27,5 @@ echo "
 
 
 /Applications/paup4a152_osx paup_to_nexus_list.txt > paup.out
+
+rm *.tree

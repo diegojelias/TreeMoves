@@ -17,48 +17,76 @@ from cStringIO import StringIO
 from Bio import Phylo
 
 ############################################################  
-#Choose starting tree
+#User input
 ############################################################
 
-# Make one random starting tree. 
+# Title run
+name = '10tip_200trees'
+
 # Number of tips = 10
-tips = 100
+tips = 10
+
+# Total out trees per cloud
+cloud_size = 100
+
+# Desired normalized RF distance between starting trees and for each cloud of trees
+RF_norm_start = 1.0
+RF_norm_cloud = 0.125
+
+############################################################  
+#Choose starting trees
+############################################################
+print("Making starting trees...")
 # Create random tree. Average branch length of 1. No variation in branch length. Don't print out tree structure
 t1 = readTree.rand_tree(tips=tips,brl_avg=1,brl_std=None,verbose='F')
 
 # Calculate number of NNI moves based on desired normalized RF distance.
-# Used for creating another starting tree or creating a cluster
-# Desired normalized RF distance
-RF_norm = 1
-# Calculate maximum RF distance and NNI moves
 RF_max = 2*(tips-2)
-NNI_moves = int((RF_max * RF_norm)/2)
-
-# Confirm calculations
-print("RF_norm: "+str(RF_norm)+", NNI_moves: "+str(NNI_moves))
+NNI_moves_start = int((RF_max * RF_norm_start)/2)
 
 # Create second starting tree
-t2 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves,node_choice='random',no_dup_start_tree='F')
+t2 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF='1')
 
 # Write out tree files
-readTree.write_single_tree(t1,'100tip_starting_tree_1.tree')
-readTree.write_single_tree(t2,'100tip_starting_tree_2.tree')
+readTree.write_single_tree(t1,'%s_starting_tree1.tree' % name)
+readTree.write_single_tree(t2,'%s_starting_tree_2.tree' % name)
 
+############################################################  
 # Make cluster of trees around each starting tree
+############################################################
 # Calculate number of NNI moves based on desired normalized RF distance.
-RF_norm = 0.125
-RF_max = 2*(tips-2)
-NNI_moves = int((RF_max * RF_norm)/2)
+NNI_moves_cloud = int((RF_max * RF_norm_cloud)/2)
 
-# Make a cluster of 100 trees total in each cluster. 
-cluster1 = readTree.NNI_mult_trees(in_tree=t1,num_out_trees=99,num_nni_moves=NNI_moves,out='list')
-cluster2 = readTree.NNI_mult_trees(in_tree=t2,num_out_trees=99,num_nni_moves=NNI_moves,out='list')
+# Make a cloud for each starting tree
+c_size = int(cloud_size)-1 
 
-# Make a nexus file with starting trees and cluster trees
-readTree.list_to_out(cluster1, cluster2,'100tip_100tree.tree')
+print("Making clouds...")
 
+# Make clouds
+cluster1 = readTree.NNI_mult_trees(in_tree=t1,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
+cluster2 = readTree.NNI_mult_trees(in_tree=t2,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
+# Make a nexus file with starting trees and cloud trees
+readTree.list_to_out(cluster1, cluster2,'%s_cloud.tree' % name)
+
+############################################################  
+# Print info to log file
+############################################################
+print("Calculating stats on trees...")
+# Calculate emperical distance between two start trees
+RF_emp = readTree.rf_unweighted(t1,t2,normalized='T')[1]
+# Calculate average density of each cloud
+RF_cloud1 = readTree.cluster_density_avg(in_file='%s_cloud.tree' % name, NNI_trees= int(cloud_size)-1, starting_tree_number=0)
+RF_cloud2 = readTree.cluster_density_avg(in_file='%s_cloud.tree' % name, NNI_trees= int(cloud_size)-1, starting_tree_number=cloud_size)
+# write to log file
+with open('%s.log' % name, "w") as log_file:
+	line1 = "File name: "+str(name)
+	line2 = "Starting trees - RF_input: "+str(RF_norm_start)+", RF_calc: "+str(RF_emp)+", NNI_moves: "+str(NNI_moves_start)
+	line3 = "Cloud of trees - RF_input: "+str(RF_norm_cloud)+", RF_calc1: "+str(RF_cloud1)+", RF_calc1: "+str(RF_cloud2)+", NNI_moves: "+str(NNI_moves_cloud)
+	log_file.write("%s \n %s \n %s \n" % (line1, line2, line3))
+
+print("Making into nexus files...")
 # Turn script into Nexus that is readable by TreeScaper
 # This script turns all *.tree files into *.nex files 
 subprocess.call(['./makeNexus.sh'])
-
+print("Done")
 
