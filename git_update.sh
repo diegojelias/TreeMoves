@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="edits"
+message="small edits"
 
 echo $message
 

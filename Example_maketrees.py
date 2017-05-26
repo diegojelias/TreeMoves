@@ -80,6 +80,7 @@ RF_cloud2 = readTree.cluster_density_avg(in_file='%s_cloud.tree' % name, NNI_tre
 # write to log file
 with open('%s.log' % name, "w") as log_file:
 	line1 = "File name: "+str(name)
+	line1b = "Tips: "+str(tips)+", Trees per cloud: "+str(cloud_size)
 	line2 = "Starting trees - RF_input: "+str(RF_norm_start)+", RF_calc: "+str(RF_emp)+", NNI_moves: "+str(NNI_moves_start)
 	line3 = "Cloud of trees - RF_input: "+str(RF_norm_cloud)+", RF_calc1: "+str(RF_cloud1)+", RF_calc1: "+str(RF_cloud2)+", NNI_moves: "+str(NNI_moves_cloud)
 	log_file.write("%s \n %s \n %s \n" % (line1, line2, line3))
