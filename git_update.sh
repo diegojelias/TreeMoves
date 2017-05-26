@@ -5,5 +5,5 @@ message="Typo"
 echo $message
 
 git add *
-git commit -m "$message"
+git commit -a -m "$message"
 git push
