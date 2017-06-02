@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="small edits"
+message="Adding dendropy3 compatibility"
 
 echo $message
 
