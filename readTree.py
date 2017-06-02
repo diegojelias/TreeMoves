@@ -3,6 +3,7 @@
 from __future__ import (division, print_function)
 import random
 import numpy
+# This is currently only compatable with Dendropy 4
 import dendropy
 import re
 from Bio import Phylo

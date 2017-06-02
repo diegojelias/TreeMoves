@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Adding dendropy3 compatibility"
+message="Adding note that these scripts are currently only compatible with Dendropy 4"
 
 echo $message
 
