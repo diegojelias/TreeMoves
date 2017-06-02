@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="small edits"
+message="Adding note that these scripts are currently only compatible with Dendropy 4"
 
 echo $message
 
