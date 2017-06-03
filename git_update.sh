@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="small edits"
+message="Make sure NNI moves != 0"
 
 echo $message
 

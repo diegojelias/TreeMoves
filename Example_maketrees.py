@@ -43,7 +43,8 @@ t1 = readTree.rand_tree(tips=tips,brl_avg=1,brl_std=None,verbose='F')
 # Calculate number of NNI moves based on desired normalized RF distance.
 RF_max = 2*(tips-2)
 NNI_moves_start = int((RF_max * RF_norm_start)/2)
-
+if NNI_moves_start == 0:
+	NNI_moves_start = 1
 # Create second starting tree
 t2 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF='1')
 
@@ -56,7 +57,8 @@ readTree.write_single_tree(t2,'%s_starting_tree_2.tree' % name)
 ############################################################
 # Calculate number of NNI moves based on desired normalized RF distance.
 NNI_moves_cloud = int((RF_max * RF_norm_cloud)/2)
-
+if NNI_moves_cloud == 0:
+	NNI_moves_cloud = 1
 # Make a cloud for each starting tree
 c_size = int(cloud_size)-1 
 
