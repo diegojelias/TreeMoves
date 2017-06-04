@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Adding folder with example scripts"
+message="Adding another script that just calculates stats for clouds"
 
 echo $message
 
