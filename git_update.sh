@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Make sure NNI moves != 0"
+message="Adding folder with example scripts"
 
 echo $message
 
