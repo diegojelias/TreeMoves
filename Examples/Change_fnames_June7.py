@@ -38,10 +38,12 @@ for t in glob.glob('*starting_tree*'):
 	newt = newName+".nex"
 	os.system("mv %s %s" % (t,mainDir+"/"+newt))
 
-for t in glob.glob('200tip*'):
-	repName = t.split(".")[0]
-	listName = repName.split("_")
-	# Adding in RF distance between clouds
-	newName = listName[0]+"_"+listName[1]+"_0.043_"+"1.0start_"+listName[2]+"_"+listName[3]+"_"+listName[4]+"_"+listName[5]
-	newt = newName+".nex"
-	os.system("mv %s %s" % (t,mainDir+"/"+newt))
+# If you screw up and need to replace some part of the file names
+#for t in glob.glob('10tip*'):
+#	repName = t.split(".")[0]
+#	listName = t.split("0.043")
+#	print(listName)
+#	# Adding in RF distance between clouds
+#	newName = listName[0]+"0.125"+listName[1]
+#	os.system("mv %s %s" % (t,mainDir+"/"+newName))
+#
