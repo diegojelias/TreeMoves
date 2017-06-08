@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Adding another script that just calculates stats for clouds"
+message="Changing file naming schemes"
 
 echo $message
 
