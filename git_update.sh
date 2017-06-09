@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="squashing int ants"
+message="input formatted nexus files"
 
 echo $message
 
