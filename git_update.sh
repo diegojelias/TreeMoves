@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Make sure NNI moves != 0"
+message="Changing file naming schemes"
 
 echo $message
 

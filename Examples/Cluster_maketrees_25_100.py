@@ -20,18 +20,18 @@ from Bio import Phylo
 #User input
 ############################################################
 
-# Number of tips = 10
-tips = 10
+# Title run
+name = '25tip_100trees_taco'
+
+# Number of tips
+tips = 25
 
 # Total out trees per cloud
 cloud_size = 100
 
 # Desired normalized RF distance between starting trees and for each cloud of trees
 RF_norm_start = 1.0
-RF_norm_cloud = 0.125
-
-# Title run
-name =("%stip_%strees_%s_%sstart_taco" % (tips,cloud_size,RF_norm_cloud,RF_norm_start))
+RF_norm_cloud = 0.043
 
 ############################################################  
 #Choose starting trees
@@ -45,6 +45,7 @@ RF_max = 2*(tips-2)
 NNI_moves_start = int((RF_max * RF_norm_start)/2)
 if NNI_moves_start == 0:
 	NNI_moves_start = 1
+
 # Create second starting tree
 t2 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF='1')
 
@@ -59,6 +60,7 @@ readTree.write_single_tree(t2,'%s_starting_tree_2.tree' % name)
 NNI_moves_cloud = int((RF_max * RF_norm_cloud)/2)
 if NNI_moves_cloud == 0:
 	NNI_moves_cloud = 1
+
 # Make a cloud for each starting tree
 c_size = int(cloud_size)-1 
 
@@ -76,9 +78,14 @@ readTree.list_to_out(cluster1, cluster2,'%s_cloud.tree' % name)
 print("Calculating stats on trees...")
 # Calculate emperical distance between two start trees
 RF_emp = readTree.rf_unweighted(t1,t2,normalized='T')[1]
+'''
 # Calculate average density of each cloud
 RF_cloud1 = readTree.cluster_density_avg(in_file='%s_cloud.tree' % name, NNI_trees= int(cloud_size)-1, starting_tree_number=0)
 RF_cloud2 = readTree.cluster_density_avg(in_file='%s_cloud.tree' % name, NNI_trees= int(cloud_size)-1, starting_tree_number=cloud_size)
+'''
+# run RF calcs later on cluster, find replace these bits in the script
+RF_cloud1 = "twas"
+RF_cloud2 = "brillig"
 # write to log file
 with open('%s.log' % name, "w") as log_file:
 	line1 = "File name: "+str(name)

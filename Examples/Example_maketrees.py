@@ -20,6 +20,9 @@ from Bio import Phylo
 #User input
 ############################################################
 
+# Title run
+name = '10tip_200trees'
+
 # Number of tips = 10
 tips = 10
 
@@ -29,9 +32,6 @@ cloud_size = 100
 # Desired normalized RF distance between starting trees and for each cloud of trees
 RF_norm_start = 1.0
 RF_norm_cloud = 0.125
-
-# Title run
-name =("%stip_%strees_%s_%sstart_taco" % (tips,cloud_size,RF_norm_cloud,RF_norm_start))
 
 ############################################################  
 #Choose starting trees
