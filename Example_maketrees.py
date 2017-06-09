@@ -46,7 +46,7 @@ NNI_moves_start = int((RF_max * RF_norm_start)/2)
 if NNI_moves_start == 0:
 	NNI_moves_start = 1
 # Create second starting tree
-t2 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF='1')
+t2 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
 
 # Write out tree files
 readTree.write_single_tree(t1,'%s_starting_tree_1.tree' % name)

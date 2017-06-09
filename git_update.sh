@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Changing file naming schemes"
+message="squashing int ants"
 
 echo $message
 
