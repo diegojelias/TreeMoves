@@ -48,9 +48,9 @@ def cluster_density_avg(in_file,NNI_trees,starting_tree_number=0):
 			both = [dist,norm_dist]
 			nRF_list.append(norm_dist)
 	start_tree = dendropy.Tree.get(path=in_file,schema="nexus",taxon_namespace=taxa, tree_offset=0,rooting='force-rooted')
-    dist_start=dendropy.calculate.treecompare.symmetric_difference(in_tree,start_tree)
-    print("this should be 0 or a big number: "+str(dist_start))
-    print("list: "+str(nRF_list))
+	dist_start=dendropy.calculate.treecompare.symmetric_difference(in_tree,start_tree)
+	print("this should be 0 or a big number: "+str(dist_start))
+	print("list: "+str(nRF_list))
 	return numpy.mean(nRF_list)
 			
 
@@ -80,10 +80,10 @@ def calc_clouds(filePrefix,cloudSize):
 			f.truncate()
 
 def main():
-	calc_clouds('10tip_100trees_0.125_1.0start', 100)
-	calc_clouds('10tip_100trees_0.125_0.5start', 100)
-	calc_clouds('10tip_1000trees_0.125_1.0start', 1000)
-	calc_clouds('10tip_1000trees_0.125_0.5start', 1000)
+	calc_clouds('10tip_100trees_0.125_1.0start_', 100)
+	calc_clouds('10tip_100trees_0.125_0.5start_', 100)
+	calc_clouds('10tip_1000trees_0.125_1.0start_', 1000)
+	calc_clouds('10tip_1000trees_0.125_0.5start_', 1000)
 
 
 if __name__=='__main__':
