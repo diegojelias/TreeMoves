@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="input formatted nexus files"
+message="Add printed output of cloud stats"
 
 echo $message
 
