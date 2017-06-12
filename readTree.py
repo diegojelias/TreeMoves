@@ -337,20 +337,18 @@ def NNI(orig_tree,node_choice='random'):
 def NNI_mult_moves(in_tree,num_moves,node_choice='random',no_dup_start_tree='F', req_min_RF='0'):
 	"""
 	Takes an input tree and makes a given number of moves on that tree. outputs a readTree.Tree object.
+	Options to not repeat the input tree, and to make a tree a specified normalized RF distance away. If you give a normalized min RF, the number of moves isnt used. 
+	I need to redo this function because of the num_moves vs RF issue, but not doing it right now. 
 	"""
 	new_tree=in_tree
 	# If we don't mind getting a duplicate of the start tree
-	if int(req_min_RF) == 0:
+	if float(req_min_RF) == 0:
 		if no_dup_start_tree == 'F':
 			for move in range(num_moves):
 				# Makes given number of moves based on single starting tree.
 				new_tree = NNI(new_tree,node_choice)
 				dist = rf_unweighted(in_tree,new_tree, normalized='T')[1]
-				if int(req_min_RF) != 0:
-					while int(dist) < int(req_min_RF):
-						new_tree = NNI(new_tree,node_choice)
-						dist = rf_unweighted(in_tree,new_tree, normalized='T')[1]
-						#print("distance :"+str(dist))
+
 		# If we don't want to ever return to the starting tree. 
 		elif no_dup_start_tree == 'T':
 			for move in range(num_moves):
@@ -368,11 +366,16 @@ def NNI_mult_moves(in_tree,num_moves,node_choice='random',no_dup_start_tree='F',
 					new_tree = next_tree
 					dist = rf_unweighted(in_tree,new_tree, normalized='T')[1]
 					#print("new_tree_distance :"+str(dist))
-	elif int(req_min_RF) != 0:
+	# If we want the second tree to be a specific RF distance away
+	elif float(req_min_RF) != 0:
 		if no_dup_start_tree == 'F':
+			# Do a single NNI move on the new tree
 			new_tree = NNI(new_tree,node_choice)
+			# Calculate distance between original input tree and new tree
 			dist = rf_unweighted(in_tree,new_tree, normalized='T')[1]
-			while int(dist) < int(req_min_RF):
+			#print("first dist: "+str(dist))
+			# While the distance is less than 
+			while float(dist) < float(req_min_RF):
 				new_tree = NNI(new_tree,node_choice)
 				dist = rf_unweighted(in_tree,new_tree, normalized='T')[1]
 				#print("distance :"+str(dist))
@@ -493,7 +496,7 @@ Tree information functions
 
 def rf_unweighted(tree_object1,tree_object2,normalized='F'): 
 	'''
-	Gives RF and normalized RF
+	Gives RF=rf_unweighted[0] and normalized RF=rf_unweighted[1]
 	'''
 	tree_newick1 = tree_object1.newick(tree_object1.root)+";"
 	tree_newick2 = tree_object2.newick(tree_object2.root)+";"

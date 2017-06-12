@@ -5,8 +5,6 @@
 ############################## 
 
 from __future__ import (division, print_function)
-from readTree import rf_unweighted
-from readTree import rf_weighted
 import dendropy
 import re
 import os
@@ -22,6 +20,7 @@ def cluster_density_avg(in_file,NNI_trees,starting_tree_number=0):
 	x = starting_tree_number + 1
 	y = x + NNI_trees -1
 	# print(x,y)
+	print("starting tree number: "+str(starting_tree_number))
 	version = dendropy.__version__.split(".")[0]
 	if version == '4':
 		for i in range(x,y):
@@ -48,6 +47,10 @@ def cluster_density_avg(in_file,NNI_trees,starting_tree_number=0):
 			norm_dist = dist/max_RF
 			both = [dist,norm_dist]
 			nRF_list.append(norm_dist)
+	start_tree = dendropy.Tree.get(path=in_file,schema="nexus",taxon_namespace=taxa, tree_offset=0,rooting='force-rooted')
+	dist_start=dendropy.calculate.treecompare.symmetric_difference(in_tree,start_tree)
+	print("this should be 0 or a big number: "+str(dist_start))
+	print("list: "+str(nRF_list))
 	return numpy.mean(nRF_list)
 			
 
@@ -60,8 +63,8 @@ def calc_clouds(filePrefix,cloudSize):
 		print(str(name))
 		print("Calculating stats on clouds...")
 		# Calculate average density of each cloud
-		RF_cloud1 = cluster_density_avg(in_file='%s_cloud.tree' % name, NNI_trees= int(cloud_size)-1, starting_tree_number=0)
-		RF_cloud2 = cluster_density_avg(in_file='%s_cloud.tree' % name, NNI_trees= int(cloud_size)-1, starting_tree_number=cloud_size)
+		RF_cloud1 = cluster_density_avg(in_file='%s_cloud.nex' % name, NNI_trees= int(cloud_size)-1, starting_tree_number=0)
+		RF_cloud2 = cluster_density_avg(in_file='%s_cloud.nex' % name, NNI_trees= int(cloud_size)-1, starting_tree_number=cloud_size)
 		#RF_cloud1 = 'Slithy'
 		#RF_cloud2 = 'Toves'
 		print("Writing values to log files...")
@@ -77,10 +80,10 @@ def calc_clouds(filePrefix,cloudSize):
 			f.truncate()
 
 def main():
-	calc_clouds('25tip_100trees_',100)
-	calc_clouds('25tip_1000trees_',1000)
-	calc_clouds('50tip_100trees_',100)
-	calc_clouds('50tip_1000trees_',1000)
+	calc_clouds('10tip_100trees_0.125_1.0start_', 100)
+	calc_clouds('10tip_100trees_0.125_0.5start_', 100)
+	calc_clouds('10tip_1000trees_0.125_1.0start_', 1000)
+	calc_clouds('10tip_1000trees_0.125_0.5start_', 1000)
 
 
 if __name__=='__main__':

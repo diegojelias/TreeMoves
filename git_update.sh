@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Changing file naming schemes"
+message="Add printed output of cloud stats"
 
 echo $message
 
