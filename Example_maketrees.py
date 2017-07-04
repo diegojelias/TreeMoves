@@ -1,6 +1,7 @@
 
 #!/usr/bin/env python
 ############################## 
+### NEED TO REWRITE INTO FUNCTIONS 
 # Need to change lots of details below. Then whole script can be run, or pieces can be run in python interactively.
 # This script calls makeNexus.sh, which requires user to input a custom path to Paup* 
 # This script is all based on unweighted RF distances, will need to edit normalized RF calculations for weighted RF I think. 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-message="Add printed output of cloud stats"
+message="Cleaning up folder"
 
 echo $message
 
