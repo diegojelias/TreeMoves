@@ -1,6 +1,10 @@
 #!/bin/bash
 
-message="Cleaning up folder"
+
+
+message=$1
+
+
 
 echo $message
 

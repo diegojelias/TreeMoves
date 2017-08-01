@@ -22,10 +22,10 @@ from Bio import Phylo
 ############################################################
 
 # Number of tips = 10
-tips = 10
+tips = 75
 
 # Total out trees per cloud
-cloud_size = 100
+cloud_size = 1000
 
 # Desired normalized RF distance between starting trees and for each cloud of trees
 RF_norm_start = 1.0
