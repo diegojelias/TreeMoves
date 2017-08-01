@@ -1,6 +1,10 @@
 #!/bin/bash
 
-message="Add printed output of cloud stats"
+
+
+message=$1
+
+
 
 echo $message
 

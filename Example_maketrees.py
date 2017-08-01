@@ -1,6 +1,7 @@
 
 #!/usr/bin/env python
 ############################## 
+### NEED TO REWRITE INTO FUNCTIONS 
 # Need to change lots of details below. Then whole script can be run, or pieces can be run in python interactively.
 # This script calls makeNexus.sh, which requires user to input a custom path to Paup* 
 # This script is all based on unweighted RF distances, will need to edit normalized RF calculations for weighted RF I think. 
@@ -21,10 +22,10 @@ from Bio import Phylo
 ############################################################
 
 # Number of tips = 10
-tips = 10
+tips = 75
 
 # Total out trees per cloud
-cloud_size = 100
+cloud_size = 1000
 
 # Desired normalized RF distance between starting trees and for each cloud of trees
 RF_norm_start = 1.0

@@ -1,5 +1,7 @@
 To Do:
 
+
+
 readTree.py
 	- make multiple ways to pick starting node. Currently relies on an exponential distribution to preferentially make moves on shorter branches. 
 	- Do we need to store branch lengths? If processing time becomes an issue then delete these steps. 
@@ -20,6 +22,3 @@ readTree.py
 				self.num_tips(child,counter)
 
 	"""
-
-subsampleTreeFile.py
-	- switch from Dendropy to biopython if possible for reading in nexus files. Something faster.  
