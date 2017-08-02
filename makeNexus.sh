@@ -32,4 +32,4 @@ echo "
 
 /Applications/paup4a152_osx paup_to_nexus_list.txt > paup.out
 
-rm *.tree
+#rm *.tree
