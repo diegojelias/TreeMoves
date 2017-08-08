@@ -165,16 +165,104 @@ def runCLV(mainDir):
 ############################################################
 def main():
 	# User input
-	tips = 75
+	tips = 25
 	cloud_size = 1000
-	RF_norm_cloud = 0.125
-	RF_norm_start = 1.0
 	number_replicates = 10
-	# Make a bunch of trees
+	############################################################ 
+	# Theoretical edge at 0.25
+	############################################################ 
+	RF_norm_start = 0.95
+	RF_norm_cloud = 0.35
 	for num in range(1,number_replicates+1):
 		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
 		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
 		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	RF_norm_start = 0.85
+	RF_norm_cloud = 0.3
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+	
+	RF_norm_start = 0.75
+	RF_norm_cloud = 0.25
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	RF_norm_start = 0.63
+	RF_norm_cloud = 0.19
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	RF_norm_start = 0.5
+	RF_norm_cloud = 0.125
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	RF_norm_start = 0.336
+	RF_norm_cloud = 0.043
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+	############################################################ 
+	# Theoretical edge at 0.5
+	############################################################ 
+	RF_norm_start = 1.0
+	RF_norm_cloud = 0.25
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	RF_norm_start = 0.88
+	RF_norm_cloud = 0.19
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+	
+	RF_norm_start = 0.75
+	RF_norm_cloud = 0.125
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	RF_norm_start = 0.586
+	RF_norm_cloud = 0.043
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+	############################################################ 
+	# Theoretical edge at 0.75
+	############################################################ 
+	RF_norm_start = 1.0
+	RF_norm_cloud = 0.125
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	RF_norm_start = 0.836
+	RF_norm_cloud = 0.043
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+
+
+
+
 
 	print("Making into nexus files...")
 	# Turn script into Nexus that is readable by TreeScaper
