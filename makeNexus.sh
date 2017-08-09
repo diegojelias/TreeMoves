@@ -30,6 +30,6 @@ echo "
 " >> paup_to_nexus_list.txt
 
 
-/Applications/paup4a152_osx paup_to_nexus_list.txt > paup.out
+/home/gmount/paup4a156_ubuntu64 paup_to_nexus_list.txt > paup.out
 
 #rm *.tree
