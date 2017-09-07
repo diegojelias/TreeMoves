@@ -29,7 +29,7 @@ echo "
 	quit;
 " >> paup_to_nexus_list.txt
 
-
-/home/gmount/paup4a156_ubuntu64 paup_to_nexus_list.txt > paup.out
+/Applications/paup4a157_osx paup_to_nexus_list.txt > paup.out
+#/home/gmount/paup4a156_ubuntu64 paup_to_nexus_list.txt > paup.out
 
 #rm *.tree
