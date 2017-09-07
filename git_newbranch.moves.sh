@@ -1,12 +1,9 @@
 #!/bin/bash
-
 mv git_newbranch.moves.sh ../
 
-#cd ./TreeMoves
+new_branch='Aug8_ggm'
 
-
-new_branch='Aug1_ggm'
-old_branch='July1_ggm'
+old_branch='Aug1_ggm'
 
 git checkout master
 git branch -d $old_branch

@@ -1,0 +1,28 @@
+
+P A U P *
+Version 4.0a (build 157) for Macintosh OS X (built on Aug 10 2017 at 12:24:32)
+Wed Sep  6 15:16:29 2017
+
+Running on Intel(R) 64 architecture
+SSE vectorization enabled
+Multithreading enabled for likelihood using Pthreads
+Compiled using Intel compiler (icc) 11.1.0 (build 20091012)
+
+        -----------------------------NOTICE-----------------------------
+          This is an alpha-test version that is still changing rapidly.
+          It will expire on 1 Jan 2018.
+
+          Please report bugs to david.swofford@duke.edu
+        ----------------------------------------------------------------
+
+Processing of file "~/Projects/TreeScaper/TreeMoves/paup_to_nexus_list.txt" begins...
+
+Processing of file "~/Projects/TreeScaper/TreeMoves/hybridspeciation_25tip_1000trees_0.125_1.0start_cloud.tree"
+begins...
+
+2000 trees read from TREES block; time used = 0.07 sec (CPU time = 0.06 sec)
+
+Processing of input file "hybridspeciation_25tip_1000trees_0.125_1.0start_cloud.tree" completed.
+
+2000 trees saved to file
+"~/Projects/TreeScaper/TreeMoves/hybridspeciation_25tip_1000trees_0.125_1.0start_cloud.nex"

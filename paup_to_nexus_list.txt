@@ -1,0 +1,10 @@
+begin paup;
+	set nowarnreset autoclose maxtrees = 200000;
+
+
+	execute hybridspeciation_25tip_1000trees_0.125_1.0start_cloud.tree;
+	savetrees file=hybridspeciation_25tip_1000trees_0.125_1.0start_cloud.nex;
+
+
+	quit;
+
