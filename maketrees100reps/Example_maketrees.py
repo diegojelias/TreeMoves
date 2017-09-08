@@ -165,16 +165,40 @@ def runCLV(mainDir):
 ############################################################
 def main():
 	# User input
-	tips = 75
-	cloud_size = 1000
+	tips = 25
 	RF_norm_cloud = 0.125
 	RF_norm_start = 1.0
-	number_replicates = 10
+	number_replicates = 100
+
+100, 200, 250, 500, 750, 1000, 2k, 3k, 5k, 10k, 20k
+
+	cloud_size = 100
+	# Make a bunch of trees
+	for num in range(1,number_replicates+1):
+		# name things
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	cloud_size = 200
 	# Make a bunch of trees
 	for num in range(1,number_replicates+1):
 		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
 		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
 		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+	cloud_size = 500
+	# Make a bunch of trees
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+
+
+
+
+
+
 
 	print("Making into nexus files...")
 	# Turn script into Nexus that is readable by TreeScaper
