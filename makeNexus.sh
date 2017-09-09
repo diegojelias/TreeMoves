@@ -29,7 +29,13 @@ echo "
 	quit;
 " >> paup_to_nexus_list.txt
 
-/Applications/paup4a157_osx paup_to_nexus_list.txt > paup.out
-#/home/gmount/paup4a156_ubuntu64 paup_to_nexus_list.txt > paup.out
+#/Applications/paup4a157_osx paup_to_nexus_list.txt > paup.out
+/home/gmount/paup4a156_ubuntu64 paup_to_nexus_list.txt > paup.out
+
+mkdir trees
+mkdir startingtrees
+mv *starting_tree* startingtrees
+mv *.trees trees
+mv *.log trees
 
 #rm *.tree
