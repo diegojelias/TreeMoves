@@ -35,7 +35,7 @@ echo "
 mkdir trees
 mkdir startingtrees
 mv *starting_tree* startingtrees
-mv *.trees trees
+mv *.tree trees
 mv *.log trees
 
 #rm *.tree
