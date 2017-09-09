@@ -164,12 +164,12 @@ def runCLV(mainDir):
 #User input
 ############################################################
 def main():
-	# User input
-	tips = 75
-	cloud_size = 1000
+tips = 25
 	RF_norm_cloud = 0.125
 	RF_norm_start = 1.0
 	number_replicates = 10
+
+	cloud_size = 3000
 	# Make a bunch of trees
 	for num in range(1,number_replicates+1):
 		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))

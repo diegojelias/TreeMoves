@@ -1,7 +1,7 @@
 #!/bin/bash
 mv git_newbranch.moves.sh ../
 
-new_branch='Aug8_ggm'
+new_branch='Sept9_ggm'
 
 old_branch='Aug1_ggm'
 
