@@ -43,7 +43,7 @@ def makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size):
 	d12=readTree.rf_unweighted(t1,t2,"T")[1]
 	d23=readTree.rf_unweighted(t2,t3,"T")[1]
 	d13=readTree.rf_unweighted(t1,t3,"T")[1]
-		print("first t2 to t3 RF"+str(d23))
+	print("first t2 to t3 RF"+str(d23))
 	#t1 and t2 are guarenteed to be RF start apart, same with t2 and t3. So we only need to check t1 and t3.
 	while d23 != RF_norm_start:
 		print("redoing third start tree")
@@ -53,12 +53,12 @@ def makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size):
 
 	# do it all again with another starting tree
 	t4 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
-	#now we are confidant that d12, d23, and d13 are all good. And we know d34 is set. We need to check d14 and d24
+	# now we need to check d24 and d34
 	d14=readTree.rf_unweighted(t1,t4,"T")[1]
 	d24=readTree.rf_unweighted(t2,t4,"T")[1]
 	d34=readTree.rf_unweighted(t3,t4,"T")[1]
 	while d24 != RF_norm_start or d34 != RF_norm_start:
-		print("redoing third start tree")
+		print("redoing fourth start tree")
 		t4 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
 		d24=readTree.rf_unweighted(t2,t4,"T")[1]
 		d34=readTree.rf_unweighted(t3,t4,"T")[1]
@@ -137,11 +137,7 @@ def main():
 	subprocess.call(['./makeNexus.sh'])
 	print("Done")
 
-	#I think this is to also make folders and run everything. Haven't tested recently. 
-	#mainDir = os.getcwd()
-	#makeFolders(mainDir)
-	#mainDir = os.getcwd()
-	#runCLV(mainDir)
+
 
 if __name__=='__main__':
 	main()

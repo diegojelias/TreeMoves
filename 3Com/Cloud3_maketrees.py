@@ -99,7 +99,7 @@ def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees):
 def main():
 	# User input
 	tips = 25
-	cloud_size = 5
+	cloud_size = 500
 	RF_norm_cloud = 0.125
 	RF_norm_start = 1.0
 	number_replicates = 10
@@ -121,11 +121,9 @@ def main():
 	subprocess.call(['./makeNexus.sh'])
 	print("Done")
 
-	#I think this is to also make folders and run everything. Haven't tested recently. 
-	#mainDir = os.getcwd()
-	#makeFolders(mainDir)
-	#mainDir = os.getcwd()
-	#runCLV(mainDir)
+#clear
+# rm *.tree
+# rm *.log
 
 if __name__=='__main__':
 	main()
