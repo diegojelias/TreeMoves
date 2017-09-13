@@ -73,6 +73,7 @@ def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees):
 	# Get starting trees parsed
 	t1=starting_trees[0]
 	t2=starting_trees[1]
+	t3=starting_trees[2]
 	# Calculate number of NNI moves based on desired normalized RF distance.
 	RF_max = 2*(tips-2)
 	NNI_moves_cloud = int((RF_max * RF_norm_cloud)/2)
@@ -86,8 +87,9 @@ def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees):
 	# Make clouds
 	cluster1 = readTree.NNI_mult_trees(in_tree=t1,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
 	cluster2 = readTree.NNI_mult_trees(in_tree=t2,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
+	cluster3 = readTree.NNI_mult_trees(in_tree=t3,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
 	# Make a nexus file with starting trees and cloud trees
-	readTree.list_to_out(cluster1, cluster2,'%s_cloud.tree' % name)
+	readTree.list_to_out(cluster1, cluster2, cluster3, '%s_cloud.tree' % name)
 
 
 ############################################################  
