@@ -39,17 +39,17 @@ def makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size):
 	# Create second starting tree
 	t2 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
 	readTree.rf_unweighted(t1,t2,"T")
-	t3 = readTree.NNI_mult_moves(in_tree=t2,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
+	t3 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
 	d12=readTree.rf_unweighted(t1,t2,"T")[1]
 	d23=readTree.rf_unweighted(t2,t3,"T")[1]
 	d13=readTree.rf_unweighted(t1,t3,"T")[1]
-	print("first t1 to t3 RF"+str(d13))
+	print("first t2 to t3 RF"+str(d23))
 	#t1 and t2 are guarenteed to be RF start apart, same with t2 and t3. So we only need to check t1 and t3.
-	while d13 != RF_norm_start:
+	while d23 != RF_norm_start:
 		print("redoing third start tree")
-		t3 = readTree.NNI_mult_moves(in_tree=t2,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
-		d13=readTree.rf_unweighted(t1,t3,"T")[1]
-		print(d13)
+		t3 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
+		d23=readTree.rf_unweighted(t2,t3,"T")[1]
+		print(d23)
 
 	# Write out tree files
 	readTree.write_single_tree(t1,'%s_starting_tree_1.tree' % name)
@@ -99,7 +99,7 @@ def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees):
 def main():
 	# User input
 	tips = 25
-	cloud_size = 500
+	cloud_size = 5
 	RF_norm_cloud = 0.125
 	RF_norm_start = 1.0
 	number_replicates = 10

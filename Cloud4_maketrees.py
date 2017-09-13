@@ -43,26 +43,26 @@ def makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size):
 	d12=readTree.rf_unweighted(t1,t2,"T")[1]
 	d23=readTree.rf_unweighted(t2,t3,"T")[1]
 	d13=readTree.rf_unweighted(t1,t3,"T")[1]
-	print("first t1 to t3 RF"+str(d13))
+		print("first t2 to t3 RF"+str(d23))
 	#t1 and t2 are guarenteed to be RF start apart, same with t2 and t3. So we only need to check t1 and t3.
-	while d13 != RF_norm_start:
+	while d23 != RF_norm_start:
 		print("redoing third start tree")
-		t3 = readTree.NNI_mult_moves(in_tree=t2,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
-		d13=readTree.rf_unweighted(t1,t3,"T")[1]
-		print(d13)
+		t3 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
+		d23=readTree.rf_unweighted(t2,t3,"T")[1]
+		print(d23)
 
 	# do it all again with another starting tree
-	t4 = readTree.NNI_mult_moves(in_tree=t3,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
+	t4 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
 	#now we are confidant that d12, d23, and d13 are all good. And we know d34 is set. We need to check d14 and d24
 	d14=readTree.rf_unweighted(t1,t4,"T")[1]
 	d24=readTree.rf_unweighted(t2,t4,"T")[1]
 	d34=readTree.rf_unweighted(t3,t4,"T")[1]
-	while d14 != RF_norm_start or d24 != RF_norm_start:
+	while d24 != RF_norm_start or d34 != RF_norm_start:
 		print("redoing third start tree")
-		t3 = readTree.NNI_mult_moves(in_tree=t2,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
-		d14=readTree.rf_unweighted(t1,t4,"T")[1]
+		t4 = readTree.NNI_mult_moves(in_tree=t1,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
 		d24=readTree.rf_unweighted(t2,t4,"T")[1]
-		print(str(d14)+", "+str(d24))
+		d34=readTree.rf_unweighted(t3,t4,"T")[1]
+		print(str(d24)+", "+str(d34))
 
 	# Write out tree files
 	readTree.write_single_tree(t1,'%s_starting_tree_1.tree' % name)
