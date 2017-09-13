@@ -1,0 +1,22 @@
+#NEXUS
+
+BEGIN TAXA;
+    DIMENSIONS NTAX=10;
+    TAXLABELS
+        taxon3
+        taxon10
+        taxon9
+        taxon2
+        taxon6
+        taxon5
+        taxon4
+        taxon7
+        taxon1
+        taxon8
+  ;
+END;
+
+BEGIN TREES;
+    TREE 1 = ((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,(((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0,(((taxon4:1.0,taxon7:1.0):1.0,taxon1:1.0):1.0,taxon8:1.0):1.0):1.0);
+END;
+

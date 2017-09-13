@@ -1,0 +1,23 @@
+#NEXUS 
+
+Begin trees;  [Treefile saved Wed Sep 13 10:26:44 2017]
+[!
+>Data file = 10tip_10trees_0.125_1.0start_1_starting_tree_2.tree
+>Tree(s) input to PAUP* as user-defined tree(s)
+>
+>1 tree read from TREES block; time used = 0.00 sec (CPU time = 0.00 sec)
+]
+	Translate
+		1 taxon6,
+		2 taxon10,
+		3 taxon3,
+		4 taxon5,
+		5 taxon7,
+		6 taxon1,
+		7 taxon4,
+		8 taxon2,
+		9 taxon8,
+		10 taxon9
+		;
+tree 1 = [&R] (((((1,2),3),(((4,5),(6,7)),8)),9),10);
+End;

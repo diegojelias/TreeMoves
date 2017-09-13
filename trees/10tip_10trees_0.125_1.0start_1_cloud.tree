@@ -1,0 +1,51 @@
+#NEXUS
+
+BEGIN TAXA;
+    DIMENSIONS NTAX=10;
+    TAXLABELS
+        taxon3
+        taxon10
+        taxon9
+        taxon2
+        taxon6
+        taxon5
+        taxon4
+        taxon7
+        taxon1
+        taxon8
+  ;
+END;
+
+BEGIN TREES;
+    TREE 1 = [&R] ((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,(((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0,(((taxon4:1.0,taxon7:1.0):1.0,taxon1:1.0):1.0,taxon8:1.0):1.0):1.0);
+    TREE 2 = [&R] ((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,(((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0,(((taxon1:1.0,taxon4:1.0):1.0,taxon7:1.0):1.0,taxon8:1.0):1.0):1.0);
+    TREE 3 = [&R] (((taxon3:1.0,taxon9:1.0):1.0,taxon10:1.0):1.0,(((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0,(((taxon4:1.0,taxon7:1.0):1.0,taxon1:1.0):1.0,taxon8:1.0):1.0):1.0);
+    TREE 4 = [&R] ((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,(((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0,(((taxon1:1.0,taxon7:1.0):1.0,taxon4:1.0):1.0,taxon8:1.0):1.0):1.0);
+    TREE 5 = [&R] (((((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0,(((taxon4:1.0,taxon7:1.0):1.0,taxon1:1.0):1.0,taxon8:1.0):1.0):1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,taxon3:1.0);
+    TREE 6 = [&R] ((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,(((taxon5:1.0,taxon2:1.0):1.0,taxon6:1.0):1.0,(((taxon4:1.0,taxon7:1.0):1.0,taxon1:1.0):1.0,taxon8:1.0):1.0):1.0);
+    TREE 7 = [&R] ((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,(((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0,(((taxon1:1.0,taxon4:1.0):1.0,taxon7:1.0):1.0,taxon8:1.0):1.0):1.0);
+    TREE 8 = [&R] (((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,(((taxon4:1.0,taxon7:1.0):1.0,taxon1:1.0):1.0,taxon8:1.0):1.0):1.0,((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0);
+    TREE 9 = [&R] (((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,((taxon2:1.0,taxon6:1.0):1.0,taxon5:1.0):1.0):1.0,(((taxon4:1.0,taxon7:1.0):1.0,taxon1:1.0):1.0,taxon8:1.0):1.0);
+    TREE 10 = [&R] ((taxon3:1.0,(taxon10:1.0,taxon9:1.0):1.0):1.0,(((taxon5:1.0,taxon6:1.0):1.0,taxon2:1.0):1.0,(((taxon4:1.0,taxon7:1.0):1.0,taxon1:1.0):1.0,taxon8:1.0):1.0):1.0);
+    TREE 11 = [&R] (((((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0,(((taxon5:1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0,taxon2:1.0):1.0):1.0,taxon8:1.0):1.0,taxon9:1.0);
+    TREE 12 = [&R] ((taxon9:1.0,taxon8:1.0):1.0,(((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0,(((taxon5:1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0,taxon2:1.0):1.0):1.0);
+    TREE 13 = [&R] (((taxon8:1.0,((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0):1.0,(((taxon5:1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0,taxon2:1.0):1.0):1.0,taxon9:1.0);
+    TREE 14 = [&R] (((taxon8:1.0,(((taxon5:1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0,taxon2:1.0):1.0):1.0,((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0):1.0,taxon9:1.0);
+    TREE 15 = [&R] (((((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0,((taxon2:1.0,(taxon5:1.0,taxon7:1.0):1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0):1.0,taxon8:1.0):1.0,taxon9:1.0);
+    TREE 16 = [&R] ((taxon9:1.0,(((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0,(((taxon5:1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0,taxon2:1.0):1.0):1.0):1.0,taxon8:1.0);
+    TREE 17 = [&R] (((((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0,((((taxon1:1.0,taxon4:1.0):1.0,taxon5:1.0):1.0,taxon7:1.0):1.0,taxon2:1.0):1.0):1.0,taxon8:1.0):1.0,taxon9:1.0);
+    TREE 18 = [&R] ((((((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0,((taxon5:1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0):1.0,taxon2:1.0):1.0,taxon8:1.0):1.0,taxon9:1.0);
+    TREE 19 = [&R] (((((((taxon5:1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0,taxon2:1.0):1.0,taxon3:1.0):1.0,(taxon6:1.0,taxon10:1.0):1.0):1.0,taxon8:1.0):1.0,taxon9:1.0);
+    TREE 20 = [&R] ((taxon9:1.0,(((taxon6:1.0,taxon10:1.0):1.0,taxon3:1.0):1.0,(((taxon5:1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon4:1.0):1.0):1.0,taxon2:1.0):1.0):1.0):1.0,taxon8:1.0);
+    TREE 21 = [&R] ((taxon9:1.0,(((taxon10:1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0,taxon8:1.0):1.0,((taxon1:1.0,taxon5:1.0):1.0,taxon7:1.0):1.0):1.0):1.0,taxon6:1.0);
+    TREE 22 = [&R] ((taxon9:1.0,((((taxon10:1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0,taxon8:1.0):1.0,taxon7:1.0):1.0,(taxon1:1.0,taxon5:1.0):1.0):1.0):1.0,taxon6:1.0);
+    TREE 23 = [&R] ((taxon9:1.0,((((taxon10:1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0,taxon8:1.0):1.0,(taxon1:1.0,taxon5:1.0):1.0):1.0,taxon7:1.0):1.0):1.0,taxon6:1.0);
+    TREE 24 = [&R] (((taxon9:1.0,((taxon1:1.0,taxon5:1.0):1.0,taxon7:1.0):1.0):1.0,((taxon10:1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0,taxon8:1.0):1.0):1.0,taxon6:1.0);
+    TREE 25 = [&R] ((taxon9:1.0,((((taxon10:1.0,taxon3:1.0):1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0,taxon8:1.0):1.0,((taxon1:1.0,taxon5:1.0):1.0,taxon7:1.0):1.0):1.0):1.0,taxon6:1.0);
+    TREE 26 = [&R] ((taxon9:1.0,(((taxon8:1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0,taxon10:1.0):1.0,((taxon1:1.0,taxon5:1.0):1.0,taxon7:1.0):1.0):1.0):1.0,taxon6:1.0);
+    TREE 27 = [&R] ((taxon9:1.0,(((taxon10:1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0,taxon8:1.0):1.0,((taxon7:1.0,taxon5:1.0):1.0,taxon1:1.0):1.0):1.0):1.0,taxon6:1.0);
+    TREE 28 = [&R] ((taxon9:1.0,((((taxon1:1.0,taxon5:1.0):1.0,taxon7:1.0):1.0,(taxon10:1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0):1.0,taxon8:1.0):1.0):1.0,taxon6:1.0);
+    TREE 29 = [&R] ((taxon9:1.0,(((taxon8:1.0,taxon10:1.0):1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0,((taxon1:1.0,taxon5:1.0):1.0,taxon7:1.0):1.0):1.0):1.0,taxon6:1.0);
+    TREE 30 = [&R] ((taxon9:1.0,((((taxon1:1.0,taxon5:1.0):1.0,taxon7:1.0):1.0,(taxon10:1.0,(taxon3:1.0,(taxon4:1.0,taxon2:1.0):1.0):1.0):1.0):1.0,taxon8:1.0):1.0):1.0,taxon6:1.0);
+END;
+

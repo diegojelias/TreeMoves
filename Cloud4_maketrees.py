@@ -51,13 +51,27 @@ def makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size):
 		d13=readTree.rf_unweighted(t1,t3,"T")[1]
 		print(d13)
 
+	# do it all again with another starting tree
+	t4 = readTree.NNI_mult_moves(in_tree=t3,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
+	#now we are confidant that d12, d23, and d13 are all good. And we know d34 is set. We need to check d14 and d24
+	d14=readTree.rf_unweighted(t1,t4,"T")[1]
+	d24=readTree.rf_unweighted(t2,t4,"T")[1]
+	d34=readTree.rf_unweighted(t3,t4,"T")[1]
+	while d14 != RF_norm_start or d24 != RF_norm_start:
+		print("redoing third start tree")
+		t3 = readTree.NNI_mult_moves(in_tree=t2,num_moves=NNI_moves_start,node_choice='random',no_dup_start_tree='F', req_min_RF=RF_norm_start)
+		d14=readTree.rf_unweighted(t1,t4,"T")[1]
+		d24=readTree.rf_unweighted(t2,t4,"T")[1]
+		print(str(d14)+", "+str(d24))
+
 	# Write out tree files
 	readTree.write_single_tree(t1,'%s_starting_tree_1.tree' % name)
 	readTree.write_single_tree(t2,'%s_starting_tree_2.tree' % name)
 	readTree.write_single_tree(t3,'%s_starting_tree_3.tree' % name)
+	readTree.write_single_tree(t4,'%s_starting_tree_4.tree' % name)
 
 	# Write out log file
-	rfs=str(d12)+", "+str(d13)+", "+str(d23)
+	rfs=str(d12)+", "+str(d13)+", "+str(d23)+", "+str(d14)+", "+str(d24)+", "+str(d34)
 	with open('%s.log' % name, "w") as log_file:
 		line1 = "File name: "+str(name)
 		line1b = "Tips: "+str(tips)+", Trees per cloud: "+str(cloud_size)
@@ -65,7 +79,7 @@ def makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size):
 		line3 = "Cloud of trees - RF_input: "+str(RF_norm_cloud)+", NNI_moves: "+str(NNI_moves_cloud)
 		log_file.write("%s\n%s\n%s" % (line1, line2, line3))
 	# Pass tree files to next function
-	return t1,t2,t3
+	return t1,t2,t3,t4
 
 
 def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees): 
@@ -74,6 +88,7 @@ def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees):
 	t1=starting_trees[0]
 	t2=starting_trees[1]
 	t3=starting_trees[2]
+	t4=starting_trees[3]
 	# Calculate number of NNI moves based on desired normalized RF distance.
 	RF_max = 2*(tips-2)
 	NNI_moves_cloud = int((RF_max * RF_norm_cloud)/2)
@@ -88,8 +103,10 @@ def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees):
 	cluster1 = readTree.NNI_mult_trees(in_tree=t1,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
 	cluster2 = readTree.NNI_mult_trees(in_tree=t2,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
 	cluster3 = readTree.NNI_mult_trees(in_tree=t3,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
+	cluster4 = readTree.NNI_mult_trees(in_tree=t4,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
+	tree_list=[cluster1,cluster2,cluster3,cluster4]
 	# Make a nexus file with starting trees and cloud trees
-	readTree.list_to_out(cluster1, cluster2, cluster3, '%s_cloud.tree' % name)
+	readTree.list_to_out(tree_list, '%s_cloud.tree' % name)
 
 
 ############################################################  
@@ -97,11 +114,17 @@ def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees):
 ############################################################
 def main():
 	# User input
-	tips = 75
-	cloud_size = 1000
+	tips = 25
+	cloud_size = 500
 	RF_norm_cloud = 0.125
 	RF_norm_start = 1.0
 	number_replicates = 10
+	# Make a bunch of trees
+	for num in range(1,number_replicates+1):
+		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
+		trees = makeStarting(tips,RF_norm_start,name,RF_norm_cloud,cloud_size)
+		makeCloud(tips,RF_norm_cloud,name,cloud_size,trees)
+	cloud_size = 1000
 	# Make a bunch of trees
 	for num in range(1,number_replicates+1):
 		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
