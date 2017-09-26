@@ -473,13 +473,13 @@ def view_phylo(tree_object):
 	print(tree_object.newick(tree_object.root))
 	Phylo.draw_ascii(tree)
 
-def list_to_out(list1,list2,out_file):
+def list_to_out(list_trees,out_file):
 	'''
 	Takes multiple dendropy tree lists and outputs to a single file.
 	'''
 	treez = dendropy.TreeList()
-	treez.extend(list1)
-	treez.extend(list2)
+	for t in list_trees:
+		treez.extend(t)
 	treez.write(path=out_file, schema='nexus')
 
 def write_single_tree(in_tree_object,out_file):
