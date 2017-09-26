@@ -1,8 +1,8 @@
 #!/bin/bash
-
 mv git_newbranch.moves.sh ../
 
-new_branch='Sept13_ggm'
+new_branch='multcloud1_ggm'
+
 old_branch='Sept7_ggm'
 
 git checkout master

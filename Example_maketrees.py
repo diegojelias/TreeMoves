@@ -73,8 +73,9 @@ def makeCloud(tips,RF_norm_cloud,name,cloud_size,starting_trees):
 	# Make clouds
 	cluster1 = readTree.NNI_mult_trees(in_tree=t1,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
 	cluster2 = readTree.NNI_mult_trees(in_tree=t2,num_out_trees=c_size,num_nni_moves=NNI_moves_cloud,out='list')
+	tree_list=[cluster1,cluster2]
 	# Make a nexus file with starting trees and cloud trees
-	readTree.list_to_out(cluster1, cluster2,'%s_cloud.tree' % name)
+	readTree.list_to_out(tree_list,'%s_cloud.tree' % name)
 def makeFolders(current_folder):
 	os.chdir(current_folder)
 	mainDir = os.getcwd()
@@ -165,11 +166,11 @@ def runCLV(mainDir):
 ############################################################
 def main():
 	# User input
-	tips = 75
-	cloud_size = 1000
+	tips = 10
+	cloud_size = 10
 	RF_norm_cloud = 0.125
 	RF_norm_start = 1.0
-	number_replicates = 10
+	number_replicates = 2
 	# Make a bunch of trees
 	for num in range(1,number_replicates+1):
 		name =("%stip_%strees_%s_%sstart_%s" % (tips,cloud_size,RF_norm_cloud,RF_norm_start, num))
